@@ -1,4 +1,4 @@
-describe "Place equivalence checks", :shared => true do
+shared_examples_for "Place equivalence checks" do
   it "should be equal when they are identical" do
     place_1 = @klass.new(:name => 'a', :x_coordinate => 0, :y_coordinate => 0, :capacity => 10)
     (place_1.equal?(place_1)).should be_true

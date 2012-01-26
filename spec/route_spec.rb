@@ -1,5 +1,4 @@
-require 'rubygems'
-require 'spec'
+require 'rspec'
 require File.dirname(__FILE__) + '/../route'
 
 describe Route do

@@ -1,16 +1,8 @@
-require 'rubygems'
-require 'rake'
-require 'spec/rake/spectask'
-require 'rcov'
-require 'rcov/rcovtask'
+require 'rspec/core/rake_task'
 
-Spec::Rake::SpecTask.new(:spec) do |t|
-  t.spec_files = FileList['spec/*_spec.rb']
+desc "Run specs"
+task :spec do
+  RSpec::Core::RakeTask.new
 end
 
-Spec::Rake::SpecTask.new(:rcov) do |t|
-  t.spec_files = FileList["spec/*_spec.rb"]
-  t.rcov = true
-end
-
-task :default  => :spec
+task :default => :spec

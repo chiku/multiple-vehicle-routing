@@ -1,4 +1,4 @@
-describe "Place distance checks", :shared => true do
+shared_examples_for "Place distance checks" do
   it "should know its distance from another place" do
     place_1 = @klass.new(:name => 'a', :x_coordinate => 0, :y_coordinate => 0)
     place_2 = @klass.new(:name => 'b', :x_coordinate => 3, :y_coordinate => 4)

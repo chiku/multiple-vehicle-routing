@@ -1,5 +1,4 @@
-require 'rubygems'
-require 'spec'
+require 'rspec'
 require File.dirname(__FILE__) + '/../center'
 require File.dirname(__FILE__) + '/../city'
 require File.dirname(__FILE__) + '/place_distance_checks'
