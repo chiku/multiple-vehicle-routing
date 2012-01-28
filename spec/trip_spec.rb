@@ -1,5 +1,4 @@
-require 'rspec'
-require File.dirname(__FILE__) + '/../trip'
+require File.dirname(__FILE__) + '/spec_helper'
 
 describe Trip do
   before :all do

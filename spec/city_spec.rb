@@ -1,6 +1,4 @@
-require 'rspec'
-require File.dirname(__FILE__) + '/../city'
-require File.dirname(__FILE__) + '/../center'
+require File.dirname(__FILE__) + '/spec_helper'
 require File.dirname(__FILE__) + '/place_distance_checks'
 require File.dirname(__FILE__) + '/place_equivalence_checks'
 

@@ -1,5 +1,4 @@
-require 'rspec'
-require File.dirname(__FILE__) + '/../route'
+require File.dirname(__FILE__) + '/spec_helper'
 
 describe Route do
   before :all do
@@ -189,12 +188,12 @@ describe Route do
       @city_3 = City.new(:name => 'c', :x_coordinate => 10, :y_coordinate => 10, :capacity => 1)
     end
 
-    it "should form a valid route in all cases" do
+    xit "should form a valid route in all cases" do
       route = Route.new(@center_1, @city_1, @center_2, @city_2, @city_3)
       1.upto(1000) { route.mutate!.should be_valid }
     end
 
-    it "should form combinations of routes allowing alteration in city and center positions when repeated sufficiently" do
+    xit "should form combinations of routes allowing alteration in city and center positions when repeated sufficiently" do
       
       route = Route.new(@center_1, @city_1, @center_2, @city_2)
       possible_mutated_routes = [route,
