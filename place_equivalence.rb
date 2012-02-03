@@ -1,14 +1,11 @@
 module PlaceEquivalence
-  def equal?(other)
-    self.eql?(other) or (other.instance_of?(self.class) and x_coordinate == other.x_coordinate and y_coordinate == other.y_coordinate and
-                      capacity == other.capacity and name == other.name)
-  end
-  
   def ==(other)
-    equal?(other)
+    return true if self.equal? other
+    return false unless other.instance_of? self.class
+    coordinates == other.coordinates and capacity == other.capacity and name == other.name
   end
   
   def hash
-    name.hash + x_coordinate.hash + y_coordinate.hash + capacity.hash
+    name.hash + coordinates.hash + capacity.hash
   end
 end

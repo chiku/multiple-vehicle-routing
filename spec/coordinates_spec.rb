@@ -41,4 +41,12 @@ describe Coordinates do
   it "knows it distance from another coordinate" do
     Coordinates.new(2, 3).distance_from(Coordinates.new(5, 7)).should == 5
   end
+
+  context "hash" do
+    it "is equal when identical" do
+      c1 = Coordinates.new(1, 3)
+      c2 = Coordinates.new(1, 3)
+      c1.hash.should == c2.hash
+    end
+  end
 end
