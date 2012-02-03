@@ -10,10 +10,7 @@ class Trip
   end
 
   def valid?
-    return false if not begins_and_ends_with_same_center?
-    return false if center_present_in_middle? 
-    return false if cities_are_repeated?
-    true
+    begins_and_ends_with_same_center? and not center_present_in_middle? and not cities_are_repeated?
   end
 
   def add(place)
