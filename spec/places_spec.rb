@@ -62,6 +62,20 @@ describe Places do
     end
   end 
 
+  context "ends with city" do
+    it "is true when the last place is a city" do
+      Places.new(center_1, city_1).should be_ends_with_city
+    end
+
+    it "is false when the last place is a center" do
+      Places.new(center_1, city_1, center_1).should_not be_ends_with_city
+    end
+
+    it "is false when no places are present" do
+      Places.new.should_not be_ends_with_city
+    end
+  end 
+
   context "has same center at extremes" do
     it "is false when the last place is a city" do
       Places.new(center_1, city_1).should_not have_same_center_at_extremes
@@ -94,6 +108,20 @@ describe Places do
     end
   end
 
+  context "has unique places" do
+    it "is false when a city is present twice" do
+      Places.new(center_1, city_1, city_1).should_not have_unique_places
+    end
+
+    it "is false when a center is present twice" do
+      Places.new(center_1, city_1, center_1, city_2).should_not have_unique_places
+    end
+
+    it "is true when all places are unique" do
+      Places.new(center_1, city_1, center_2, city_2).should have_unique_places
+    end
+  end
+
   context "has no intermediate center" do
     it "is true no centers are present in the middle" do
       Places.new(center_1, city_1, center_1).should have_no_intermediate_center
@@ -101,6 +129,16 @@ describe Places do
 
     it "is false when a center is present in the middle" do
       Places.new(center_1, center_2, city_1, center_1).should_not have_no_intermediate_center
+    end
+  end
+
+  context "has no consecutive centers" do
+    it "is true no centers are present together" do
+      Places.new(center_1, center_2, city_1).should have_no_consecutive_center
+    end
+
+    it "is false when a center are separated by cities" do
+      Places.new(center_1, city_1, center_2, city_2).should_not have_no_consecutive_center
     end
   end
 

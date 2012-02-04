@@ -25,17 +25,36 @@ class Places
     last_place.center?
   end
 
+  def ends_with_city?
+    last_place.city?
+  end
+
   def has_same_center_at_extremes?
     begins_with_center? and first_place == last_place
   end
 
-  def has_unique_cities?
-    cities = places.select(&:city?)
-    cities.uniq.size == cities.size
+  def has_unique_places?
+    uniq_list? places
   end
+
+  def has_unique_cities?
+    uniq_list? places.select(&:city?)
+  end
+
+  def uniq_list? list
+    list.uniq.size == list.size
+  end
+  private :uniq_list?
 
   def has_no_intermediate_center?
     not places[1..-2].any?(&:center?)
+  end
+
+  def has_no_consecutive_center?
+    places.each_with_index do |place, index|
+      return true if place.center? and places[index - 1].center?
+    end
+    false
   end
 
   def add place
