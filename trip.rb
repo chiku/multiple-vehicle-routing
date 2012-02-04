@@ -5,8 +5,15 @@ class Trip
   attr_reader :places
   attr_accessor :permitted_load
 
-  def initialize(*all_places)
-    @places = Places.new *all_places
+  def initialize(*options)
+    if options.first.is_a? Hash
+      options = options.first
+      @places = options[:places]
+      @permitted_load = options[:permitted_load]
+    else
+      all_places = *options
+      @places = Places.new *all_places
+    end
   end
 
   PLACES_VALIDATIONS = [
@@ -35,7 +42,7 @@ class Trip
   def ==(other)
     return true if equal? other
     return false unless other.instance_of? self.class
-    places == other.places
+    places == other.places or places.reverse == other.places
   end
 
   def hash

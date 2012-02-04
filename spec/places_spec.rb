@@ -131,10 +131,18 @@ describe Places do
       another_places = Places.new(center_1, city_1, city_2, center_1)
       places.should == another_places
     end
+  end
 
-    it "another places with reverse order" do
-      another_places = Places.new(center_1, city_2, city_1, center_1)
-      places.should == another_places
+  context "reverse" do
+    it "is the list of places read backwards" do
+      reversed_places = Places.new(center_1, city_1, city_2, center_1).reverse
+
+      places_array = reversed_places.places
+      places_array.should have(4).things
+      places_array[0].should == center_1
+      places_array[1].should == city_2
+      places_array[2].should == city_1
+      places_array[3].should == center_1
     end
   end
 
@@ -172,6 +180,11 @@ describe Places do
 
     it "another place that one less city" do
       another_places = Places.new(center_1, city_1, center_2)
+      places.should_not == another_places
+    end
+
+    it "another places with reverse order" do
+      another_places = Places.new(center_1, city_2, city_1, center_1)
       places.should_not == another_places
     end
   end

@@ -49,17 +49,16 @@ class Places
   def ==(other)
     return true if equal? other
     return false unless other.instance_of? self.class
-    places == other.places or places == other.reverse_places  
+    places == other.places
   end
 
   def hash
     places.hash
   end
 
-  def reverse_places
-    places.reverse
+  def reverse
+    Places.new *places.reverse
   end
-  protected :reverse_places
 
   def intermediates
     Places.new(*places[1..-2])
