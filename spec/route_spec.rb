@@ -2,10 +2,10 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe Route do
   before :all do
-    @city_1 = City.new(:name => 'a', :x_coordinate => 0, :y_coordinate => 1, :capacity => 5)
-    @city_2 = City.new(:name => 'b', :x_coordinate => 0, :y_coordinate => 2, :capacity => 6)
-    @center_1 = Center.new(:name => 'A', :x_coordinate => 0, :y_coordinate => 3, :capacity => 5)
-    @center_2 = Center.new(:name => 'B', :x_coordinate => 0, :y_coordinate => 4, :capacity => 6)
+    @city_1 = City.new(:name => 'a', :coordinates => Coordinates.new(0, 1), :capacity => 5)
+    @city_2 = City.new(:name => 'b', :coordinates => Coordinates.new(0, 2), :capacity => 6)
+    @center_1 = Center.new(:name => 'A', :coordinates => Coordinates.new(0, 3), :capacity => 5)
+    @center_2 = Center.new(:name => 'B', :coordinates => Coordinates.new(0, 4), :capacity => 6)
   end
   
   describe "Validity" do
@@ -86,11 +86,11 @@ describe Route do
   
   describe "Equality" do
     before :all do
-      @city_1 = City.new(:name => 'a', :x_coordinate => 0, :y_coordinate => 1)
-      @city_2 = City.new(:name => 'b', :x_coordinate => 0, :y_coordinate => 2)
-      @city_3 = City.new(:name => 'c', :x_coordinate => 0, :y_coordinate => 5)
-      @center_1 = Center.new(:name => 'A', :x_coordinate => 0, :y_coordinate => 3)
-      @center_2 = Center.new(:name => 'B', :x_coordinate => 0, :y_coordinate => 4)
+      @city_1 = City.new(:name => 'a', :coordinates => Coordinates.new(0, 1))
+      @city_2 = City.new(:name => 'b', :coordinates => Coordinates.new(0, 2))
+      @city_3 = City.new(:name => 'c', :coordinates => Coordinates.new(0, 5))
+      @center_1 = Center.new(:name => 'A', :coordinates => Coordinates.new(0, 3))
+      @center_2 = Center.new(:name => 'B', :coordinates => Coordinates.new(0, 4))
     end
     
     it "should be equal when they are identical" do
@@ -185,7 +185,7 @@ describe Route do
   
   describe "Mutation" do
     before :all do
-      @city_3 = City.new(:name => 'c', :x_coordinate => 10, :y_coordinate => 10, :capacity => 1)
+      @city_3 = City.new(:name => 'c', :coordinates => Coordinates.new(10, 10), :capacity => 1)
     end
 
     xit "should form a valid route in all cases" do

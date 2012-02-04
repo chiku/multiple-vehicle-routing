@@ -1,12 +1,12 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
 describe Trip do
-  let(:city_1) { City.new(:name => 'a', :x_coordinate => 0, :y_coordinate => 1, :capacity => 5) }
-  let(:city_2) { City.new(:name => 'b', :x_coordinate => 0, :y_coordinate => 2, :capacity => 6) }
-  let(:city_3) { City.new(:name => 'c', :x_coordinate => 0, :y_coordinate => 8, :capacity => 6) }
-  let(:city_4) { City.new(:name => 'd', :x_coordinate => 0, :y_coordinate => 6, :capacity => 6) }
-  let(:center_1) { Center.new(:name => 'A', :x_coordinate => 0, :y_coordinate => 3, :capacity => 5) }
-  let(:center_2) { Center.new(:name => 'B', :x_coordinate => 0, :y_coordinate => 4, :capacity => 6) }
+  let(:city_1) { City.new(:name => 'a', :coordinates => Coordinates.new(0, 1), :capacity => 5) }
+  let(:city_2) { City.new(:name => 'b', :coordinates => Coordinates.new(0, 2), :capacity => 6) }
+  let(:city_3) { City.new(:name => 'c', :coordinates => Coordinates.new(0, 8), :capacity => 6) }
+  let(:city_4) { City.new(:name => 'd', :coordinates => Coordinates.new(0, 6), :capacity => 6) }
+  let(:center_1) { Center.new(:name => 'A', :coordinates => Coordinates.new(0, 3), :capacity => 5) }
+  let(:center_2) { Center.new(:name => 'B', :coordinates => Coordinates.new(0, 4), :capacity => 6) }
 
   context "center" do
     it "is the first place" do

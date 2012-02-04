@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
 describe Places do
-  let(:city_1) { City.new(:name => 'a', :x_coordinate => 0, :y_coordinate => 1, :capacity => 5) }
-  let(:city_2) { City.new(:name => 'b', :x_coordinate => 0, :y_coordinate => 2, :capacity => 6) }
-  let(:center_1) { Center.new(:name => 'A', :x_coordinate => 0, :y_coordinate => 3, :capacity => 5) }
-  let(:center_2) { Center.new(:name => 'B', :x_coordinate => 0, :y_coordinate => 4, :capacity => 6) }
+  let(:city_1) { City.new(:name => 'a', :coordinates => Coordinates.new(0, 1), :capacity => 5) }
+  let(:city_2) { City.new(:name => 'b', :coordinates => Coordinates.new(0, 2), :capacity => 6) }
+  let(:center_1) { Center.new(:name => 'A', :coordinates => Coordinates.new(0, 3), :capacity => 5) }
+  let(:center_2) { Center.new(:name => 'B', :coordinates => Coordinates.new(0, 4), :capacity => 6) }
 
   context "first place" do
     it "is the place that occurs at the beginning" do
@@ -148,7 +148,7 @@ describe Places do
 
   context "doesn't equal" do
     let(:places) { Places.new(center_1, city_1, city_2, center_1) }
-    let(:diferent_city) { City.new(:name => 'c', :x_coordinate => 0, :y_coordinate => -2, :capacity => 6) }
+    let(:diferent_city) { City.new(:name => 'c', :coordinates => Coordinates.new(0, -2), :capacity => 6) }
 
     it "nil" do
       places.should_not == nil

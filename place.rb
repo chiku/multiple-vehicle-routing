@@ -5,7 +5,7 @@ class Place
 
   def initialize(options)
     @name = options[:name]
-    @coordinates = Coordinates.new(options[:x_coordinate], options[:y_coordinate])
+    @coordinates = options[:coordinates]
     @capacity = options[:capacity]
   end
 
