@@ -115,9 +115,15 @@ describe Trip do
     end
   end
 
-  context "total distance" do
+  context "round trip distance" do
     it "is the round-trip distance for the places" do
-      Trip.new(:places => Places.new(center_1, city_1, center_1)).total_distance.should == 4
+      Trip.new(:places => Places.new(center_1, city_1, center_1)).round_trip_distance.should == 4
+    end
+  end
+
+  context "total lod" do
+    it "is the sum of the capacity for all cities" do
+      Trip.new(:places => Places.new(center_1, city_1, city_2, center_1), :permitted_load => 5).total_load.should == 11
     end
   end
 

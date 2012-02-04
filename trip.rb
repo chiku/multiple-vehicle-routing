@@ -1,9 +1,12 @@
+require 'forwardable'
 require File.dirname(__FILE__) + '/center'
 require File.dirname(__FILE__) + '/city'
 
 class Trip
   attr_reader :places
   attr_accessor :permitted_load
+
+  extend Forwardable
 
   def initialize(options = {})
     @places = options[:places] || Places.new
@@ -21,9 +24,13 @@ class Trip
     not PLACES_VALIDATIONS.any?{ |validation| not places.send validation }
   end
 
-  def add(place)
-    places.add place
+  def ==(other)
+    return true if equal? other
+    return false unless other.instance_of? self.class
+    places == other.places or places.reverse == other.places
   end
+
+  def_delegators :places, :add, :hash, :to_s, :round_trip_distance
 
   def center
     places.first_place
@@ -33,31 +40,11 @@ class Trip
     places.intermediates.places # TODO deal with object
   end
 
-  def ==(other)
-    return true if equal? other
-    return false unless other.instance_of? self.class
-    places == other.places or places.reverse == other.places
-  end
-
-  def hash
-    places.hash
-  end
-
-  def total_distance
-    places.round_trip_distance
-  end
-
-  def overloaded?(load=permitted_load)
-    total_load > load
-  end
-
-  def to_s
-    places.to_s
-  end
-
-  private
-
   def total_load
     cities.reduce(0){|sum, city| sum + city.capacity}
+  end
+
+  def overloaded?(load=permitted_load) #TODO remove parameter
+    total_load > load
   end
 end

@@ -25,7 +25,7 @@ class Route
   end
     
   def total_distance
-    @trips.inject(0) {|distance, trip| distance + trip.total_distance}
+    @trips.inject(0) {|distance, trip| distance + trip.round_trip_distance}
   end
   
   def total_overloads(load = permitted_load)
@@ -46,7 +46,7 @@ class Route
   end
   
   def to_s
-    @trips.collect{|trip| trip.to_s}.join(' ')
+    @trips.map(&:to_s).join(' ')
   end
   
   private 
