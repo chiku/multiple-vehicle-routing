@@ -43,9 +43,9 @@ describe Route do
     
     it "should know that a route contains a trip" do
       route = Route.new(@center_1, @city_1, @center_2, @city_2)
-      route.contains_trip?(Trip.new(@center_1, @city_1, @center_1)).should be_true
-      route.contains_trip?(Trip.new(@center_2, @city_2, @center_2)).should be_true
-      route.contains_trip?(Trip.new(@center_1, @city_2, @center_1)).should be_false
+      route.contains_trip?(Trip.new(:places => Places.new(@center_1, @city_1, @center_1))).should be_true
+      route.contains_trip?(Trip.new(:places => Places.new(@center_2, @city_2, @center_2))).should be_true
+      route.contains_trip?(Trip.new(:places => Places.new(@center_1, @city_2, @center_1))).should be_false
     end
     
     it "should know that the contained trips present in an array when the trips belong to the same route" do
@@ -61,19 +61,26 @@ describe Route do
     
     it "should know that the contained trips present in an array has one trip is missing from the list" do
       route = Route.new(@center_1, @city_1, @center_2, @city_2)
-      trips = [Trip.new(@center_1, @city_1, @center_1)]
+      trips = [Trip.new(:places => Places.new(@center_1, @city_1, @center_1))]
       route.contains_trips?(trips).should be_false
     end
     
     it "should know that the contained trips present in an array has one trip extra in the list" do
       route = Route.new(@center_1, @city_1, @center_2, @city_2)
-      trips = [Trip.new(@center_1, @city_1, @center_1), Trip.new(@center_2, @city_2, @center_2), Trip.new(@center_1, @city_2, @center_1)]
+      trips = [
+        Trip.new(:places => Places.new(@center_1, @city_1, @center_1)),
+        Trip.new(:places => Places.new(@center_2, @city_2, @center_2)),
+        Trip.new(:places => Places.new(@center_1, @city_2, @center_1))
+      ]
       route.contains_trips?(trips).should be_false
     end
-    
+
     it "should know that the contained trips present in an array has one trip different in the list" do
       route = Route.new(@center_1, @city_1, @center_2, @city_2)
-      trips = [Trip.new(@center_1, @city_1, @center_1), Trip.new(@center_2, @city_1, @center_2)]
+      trips = [
+        Trip.new(:places => Places.new(@center_1, @city_1, @center_1)),
+        Trip.new(:places => Places.new(@center_2, @city_1, @center_2))
+      ]
       route.contains_trips?(trips).should be_false
     end
   end
@@ -130,8 +137,8 @@ describe Route do
   describe  "Splitting into trips" do
     it "should split a route into trips properly" do
       route = Route.new(@center_1, @city_1, @center_2, @city_2)
-      trip_1 = Trip.new(@center_1, @city_1, @center_1)
-      trip_2 = Trip.new(@center_2, @city_2, @center_2)
+      trip_1 = Trip.new(:places => Places.new(@center_1, @city_1, @center_1))
+      trip_2 = Trip.new(:places => Places.new(@center_2, @city_2, @center_2))
       
       trips = route.trips
       trips.should have(2).things

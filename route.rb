@@ -71,14 +71,14 @@ class Route
   end
 
   def split_into_trips
-    @trips = [Trip.new(@places.first)]
+    @trips = [Trip.new(:places => Places.new(@places.first))]
     current_trip = 0
     @places[1, @places.size].each do |place|
       add_to_trip_number(place, current_trip) if place.city?
       if place.center?
         add_to_trip_number(@trips[current_trip].center, current_trip)
         current_trip += 1
-        @trips << Trip.new(place)
+        @trips << Trip.new(:places => Places.new(place))
       end
     end
     add_to_trip_number(@trips[current_trip].center, current_trip)

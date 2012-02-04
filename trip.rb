@@ -5,15 +5,9 @@ class Trip
   attr_reader :places
   attr_accessor :permitted_load
 
-  def initialize(*options) # TODO clean this mess
-    if options.first.is_a? Hash
-      options = options.first
-      @places = options[:places] || Places.new
-      @permitted_load = options[:permitted_load] || 0
-    else
-      all_places = *options
-      @places = Places.new *all_places
-    end
+  def initialize(options = {})
+    @places = options[:places] || Places.new
+    @permitted_load = options[:permitted_load] || 0
   end
 
   PLACES_VALIDATIONS = [
