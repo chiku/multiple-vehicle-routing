@@ -85,6 +85,6 @@ class Places
   end
 
   def round_trip_distance
-    places.each_cons(2).reduce(0) { |sum, (from, to)| sum += from.distance to }
+    places.each_cons(2).map{ |from, to| from.distance to }.reduce(0, &:+)
   end
 end

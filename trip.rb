@@ -41,7 +41,7 @@ class Trip
   end
 
   def total_load
-    cities.reduce(0){|sum, city| sum + city.capacity}
+    cities.map(&:capacity).reduce(0, &:+)
   end
 
   def overloaded?(load=permitted_load) #TODO remove parameter
