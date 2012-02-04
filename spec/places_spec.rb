@@ -40,6 +40,14 @@ describe Places do
     end
   end
 
+  context "intermediates" do
+    it "gives the places except the extremes" do
+      places = Places.new(center_1, city_1, city_2, center_1)
+      intermediate_places = Places.new(city_1, city_2)
+      places.intermediates.should == intermediate_places
+    end
+  end
+
   context "ends with center" do
     it "is true when the last place is a center" do
       Places.new(city_1, center_1).should be_ends_with_center
@@ -165,6 +173,19 @@ describe Places do
     it "another place that one less city" do
       another_places = Places.new(center_1, city_1, center_2)
       places.should_not == another_places
+    end
+  end
+
+  context "hash" do
+    it "is same hash for when equal" do
+      Places.new(center_1, city_1, center_1).hash == Places.new(center_1, city_1, center_1).hash
+    end
+  end
+
+  context "round trip distance" do
+    it "is the sum of distance between two consecutive places" do
+      Places.new(center_1, city_1, center_1).round_trip_distance.should == 4.0
+      Places.new(center_2, city_1, city_2, center_2).round_trip_distance.should == 6.0
     end
   end
 end

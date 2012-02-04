@@ -52,8 +52,22 @@ class Places
     places == other.places or places == other.reverse_places  
   end
 
+  def hash
+    places.hash
+  end
+
   def reverse_places
     places.reverse
   end
   protected :reverse_places
+
+  def intermediates
+    Places.new(*places[1..-2])
+  end
+
+  def round_trip_distance
+    sum = 0
+    places.each_cons(2) { |from, to| sum += from.distance to }
+    sum
+  end
 end

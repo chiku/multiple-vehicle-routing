@@ -7,10 +7,9 @@ class Trip
 
   def initialize(*all_places)
     @places = Places.new *all_places
-    @places_old = all_places
   end
 
-  VALIDATIONS = [
+  PLACES_VALIDATIONS = [
     :begins_with_center?,
     :has_same_center_at_extremes?,
     :has_no_intermediate_center?,
@@ -18,12 +17,11 @@ class Trip
   ]
 
   def valid?
-    not VALIDATIONS.any?{ |validation| not places.send validation }
+    not PLACES_VALIDATIONS.any?{ |validation| not places.send validation }
   end
 
   def add(place)
     places.add place
-    @places_old << place
   end
 
   def center
@@ -31,7 +29,7 @@ class Trip
   end
 
   def cities
-    @places_old[1, @places_old.size - 2]
+    places.intermediates.places # TODO deal with object
   end
 
   def ==(other)
@@ -41,15 +39,11 @@ class Trip
   end
 
   def hash
-    cities.hash + center.hash
+    places.hash
   end
 
   def total_distance
-    distance = 0
-    (0..(@places_old.size - 2)).each do |index|
-      distance += @places_old[index].distance(@places_old[index + 1])
-    end
-    distance
+    places.round_trip_distance
   end
 
   def overloaded?(load=permitted_load)
