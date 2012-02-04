@@ -95,41 +95,35 @@ describe Route do
     
     it "should be equal when they are identical" do
       route = Route.new(@center_1, @city_1, @center_2, @city_2)
-      route.equal?(route).should be_true 
-      (route == route).should be_true 
+      route.should == route
     end
     
     it "should not be equal to nil" do
       route = Route.new(@center_1, @city_1, @center_2, @city_2)
-      route.equal?(nil).should be_false 
-      (route == nil).should be_false 
+      route.should_not == nil
     end
     
     it "should not be equal to other object of another class" do
       route = Route.new(@center_1, @city_1, @center_2, @city_2)
-      route.equal?('route').should be_false 
-      (route == 'route').should be_false 
+      route.should_not == 'route'
     end
     
     it "should not be equal to when the number of trips are different" do
       route_1 = Route.new(@center_1, @city_1, @center_2, @city_2)
       route_2 = Route.new(@center_1, @city_1, @city_2)
-      route_1.equal?(route_2).should be_false 
-      (route_1 == route_2).should be_false 
+      route_1.should_not == route_2
     end
     
     it "should not be equal to when a city present in one trip is different" do
       route_1 = Route.new(@center_1, @city_1, @center_2, @city_2)
       route_2 = Route.new(@center_1, @city_1, @center_2, @city_3)
-      route_1.equal?(route_2).should be_false 
-      (route_1 == route_2).should be_false 
+      route_1.should_not == route_2
     end
     
     it "should be equal to when the routes are identical" do
       route_1 = Route.new(@center_1, @city_1, @center_2, @city_2)
       route_2 = Route.new(@center_1, @city_1, @center_2, @city_2)
-      route_1.equal?(route_2).should be_true 
-      (route_1 == route_2).should be_true 
+      route_1.should == route_2
     end
   end
   

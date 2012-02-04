@@ -5,23 +5,21 @@ require File.dirname(__FILE__) + '/mutable'
 
 class Route
   include Mutable
-  
+
   attr_reader :places, :trips
   attr_accessor :permitted_load
-  
+
   def initialize(*places)
     @places = places
     split_into_trips
   end
-  
-  def equal?(other_route)
-    self.eql?(other_route) or (other_route.instance_of?(self.class) and (self.contains_trips?(other_route.trips)))
-  end
-  
+
   def ==(other)
-    equal?(other)
+    return true if equal? other
+    return false unless other.instance_of? self.class
+    self.contains_trips? other.trips
   end
-  
+
   def valid?
     not (begins_with_city? or ends_with_center? or places_are_repeated? or centers_occur_together?)
   end
