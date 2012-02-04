@@ -5,24 +5,27 @@ class Trip
   attr_reader :places
   attr_accessor :permitted_load
 
-  def initialize(*places)
-    @places = places
+  def initialize(*all_places)
+    @places = Places.new *all_places
+    @places_old = all_places
   end
 
   def valid?
+    return places.begins_with_center? && places.has_same_center_at_extremes? && (not places.has_intermediate_center?) && places.has_unique_cities?
     begins_and_ends_with_same_center? and not center_present_in_middle? and not cities_are_repeated?
   end
 
   def add(place)
-    @places << place
+    places.add place
+    @places_old << place
   end
 
   def center
-    @places.first
+    places.first_place
   end
 
   def cities
-    @places[1, @places.size - 2]
+    @places_old[1, @places_old.size - 2]
   end
 
   def ==(other)
@@ -37,8 +40,8 @@ class Trip
 
   def total_distance
     distance = 0
-    (0..(@places.size - 2)).each do |index|
-      distance += @places[index].distance(@places[index + 1])
+    (0..(@places_old.size - 2)).each do |index|
+      distance += @places_old[index].distance(@places_old[index + 1])
     end
     distance
   end
@@ -48,13 +51,13 @@ class Trip
   end
 
   def to_s
-    "(" + @places.collect{|place| place.name}.join(' -> ') + ")"
+    places.to_s
   end
 
   private
 
   def begins_and_ends_with_same_center?
-    @places.first.center? and @places.last.center? and @places.first == @places.last
+    places.begins_with_center? and places.has_same_center_at_extremes?
   end
 
   def center_present_in_middle?
