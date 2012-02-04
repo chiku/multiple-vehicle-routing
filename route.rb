@@ -1,11 +1,8 @@
 require File.dirname(__FILE__) + '/center'
 require File.dirname(__FILE__) + '/city'
 require File.dirname(__FILE__) + '/trip'
-require File.dirname(__FILE__) + '/mutable'
 
 class Route
-  include Mutable
-
   attr_reader :places, :trips, :permitted_load
 
   def initialize(options = {})
@@ -56,7 +53,21 @@ class Route
     trips.map(&:to_s).join(' ')
   end
 
-  private
+  def mutate!
+    position_1, position_2 = rand(places.places.size), rand(places.places.size)
+
+    if position_1 != position_2 and mutation_agreable? position_1, position_2
+      places.places[position_1], places.places[position_2] = places.places[position_2], places.places[position_1]
+      split_into_trips
+    end
+
+    self
+  end
+
+  def mutation_agreable? position_1, position_2
+    (places.places[position_1].city? and places.places[position_2].city?) or (places.places[position_1].center? and places.places[position_2].center?)
+  end
+  private :mutation_agreable?
 
   def split_into_trips
     @trips = [Trip.new(:places => Places.new(places.first_place))]
@@ -75,8 +86,10 @@ class Route
 
     add_to_trip_number(trips[current_trip].center, current_trip)
   end
+  private :split_into_trips
 
   def add_to_trip_number(place, trip_number)
     trips[trip_number].add(place)
   end
+  private :add_to_trip_number
 end

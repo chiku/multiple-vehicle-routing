@@ -171,22 +171,20 @@ describe Route do
   end
 
   describe "Mutation" do
-    xit "should form a valid route in all cases" do
+    it "should form a valid route in all cases" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2, city_3))
       1.upto(1000) { route.mutate!.should be_valid }
     end
 
-    xit "should form combinations of routes allowing alteration in city and center positions when repeated sufficiently" do
-      
-      route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      possible_mutated_routes = [route,
-                                 Route.new(:places => Places.new(center_1, city_2, center_2, city_1)),
-                                 Route.new(:places => Places.new(center_2, city_1, center_1, city_2)),
-                                 Route.new(:places => Places.new(center_2, city_2, center_1, city_1))].collect{|route| route.to_s}.sort
-      mutated_routes = []
-      1.upto(10) { mutated_routes << route.mutate!.to_s }
-      
-      mutated_routes.uniq.sort.sort.should == possible_mutated_routes.sort
+    it "should form combinations of routes allowing alteration in city and center positions when repeated sufficiently" do
+      original_route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
+      mutated_route_1 = Route.new(:places => Places.new(center_1, city_2, center_2, city_1))
+      mutated_route_2 = Route.new(:places => Places.new(center_2, city_1, center_1, city_2))
+      mutated_route_3 = Route.new(:places => Places.new(center_2, city_2, center_1, city_1))
+      serialized_possible_mutated_routes = [original_route, mutated_route_1, mutated_route_2, mutated_route_3].map(&:to_s)
+
+      serialized_mutated_routes = 1.upto(20).collect { original_route.mutate!.to_s }
+      serialized_mutated_routes.each{ |route| serialized_possible_mutated_routes.should be_include(route) }
     end
   end
 end
