@@ -10,9 +10,15 @@ class Trip
     @places_old = all_places
   end
 
+  VALIDATIONS = [
+    :begins_with_center?,
+    :has_same_center_at_extremes?,
+    :has_no_intermediate_center?,
+    :has_unique_cities?
+  ]
+
   def valid?
-    return places.begins_with_center? && places.has_same_center_at_extremes? && (not places.has_intermediate_center?) && places.has_unique_cities?
-    begins_and_ends_with_same_center? and not center_present_in_middle? and not cities_are_repeated?
+    not VALIDATIONS.any?{ |validation| not places.send validation }
   end
 
   def add(place)
@@ -29,9 +35,9 @@ class Trip
   end
 
   def ==(other)
-    return true if self.equal? other
+    return true if equal? other
     return false unless other.instance_of? self.class
-    center == other.center and cities_with_equivalent_order? other
+    places == other.places
   end
 
   def hash
@@ -55,36 +61,6 @@ class Trip
   end
 
   private
-
-  def begins_and_ends_with_same_center?
-    places.begins_with_center? and places.has_same_center_at_extremes?
-  end
-
-  def center_present_in_middle?
-    cities.each do |place|
-      return true if place.center?
-    end
-    false
-  end
-
-  def cities_are_repeated?
-    # one center is already repeated, so drop the first entity
-    trip_without_first_entity = cities + [center]
-    trip_without_first_entity.uniq != trip_without_first_entity
-  end
-  
-  def cities_with_equivalent_order?(other_trip)
-    other_trip_cities = other_trip.cities
-    return false unless cities.length == other_trip_cities.length
-    cities_with_identical_order?(other_trip.cities) or cities_with_identical_order?(other_trip.cities.reverse)
-  end
-
-  def cities_with_identical_order?(other_cities)
-    cities.each_with_index do |city, index|
-      return false if city != other_cities[index]
-    end
-    true
-  end
 
   def total_load
     cities.reduce(0){|sum, city| sum + city.capacity}

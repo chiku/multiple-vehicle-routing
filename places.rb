@@ -34,8 +34,8 @@ class Places
     cities.uniq.size == cities.size
   end
 
-  def has_intermediate_center?
-    places[1..-2].any?(&:center?)
+  def has_no_intermediate_center?
+    not places[1..-2].any?(&:center?)
   end
 
   def add place
@@ -45,4 +45,15 @@ class Places
   def to_s
     "(" + places.map(&:name).join(' -> ') + ")"
   end
+
+  def ==(other)
+    return true if equal? other
+    return false unless other.instance_of? self.class
+    places == other.places or places == other.reverse_places  
+  end
+
+  def reverse_places
+    places.reverse
+  end
+  protected :reverse_places
 end

@@ -86,13 +86,13 @@ describe Places do
     end
   end
 
-  context "has intermediate center" do
-    it "is false no centers are present in the middle" do
-      Places.new(center_1, city_1, center_1).should_not have_intermediate_center
+  context "has no intermediate center" do
+    it "is true no centers are present in the middle" do
+      Places.new(center_1, city_1, center_1).should have_no_intermediate_center
     end
 
-    it "is true when a center is present in the middle" do
-      Places.new(center_1, center_2, city_1, center_1).should have_intermediate_center
+    it "is false when a center is present in the middle" do
+      Places.new(center_1, center_2, city_1, center_1).should_not have_no_intermediate_center
     end
   end
 
@@ -109,6 +109,62 @@ describe Places do
   context "to_s" do
     it "serialize to a string" do
       Places.new(center_1, city_1, city_2, center_1).to_s.should == "(A -> a -> b -> A)"
+    end
+  end
+
+  context "equals" do
+    let(:places) { Places.new(center_1, city_1, city_2, center_1) }
+
+    it "itself" do
+      places.should == places
+    end
+
+    it "another places with same order" do
+      another_places = Places.new(center_1, city_1, city_2, center_1)
+      places.should == another_places
+    end
+
+    it "another places with reverse order" do
+      another_places = Places.new(center_1, city_2, city_1, center_1)
+      places.should == another_places
+    end
+  end
+
+  context "doesn't equal" do
+    let(:places) { Places.new(center_1, city_1, city_2, center_1) }
+    let(:diferent_city) { City.new(:name => 'c', :x_coordinate => 0, :y_coordinate => -2, :capacity => 6) }
+
+    it "nil" do
+      places.should_not == nil
+    end
+
+    it "center" do
+      places.should_not == center_1
+    end
+
+    it "another places that begins with different center" do
+      another_places = Places.new(center_2, city_1, city_2, center_1)
+      places.should_not == another_places
+    end
+
+    it "another place that ends with different center" do
+      another_places = Places.new(center_1, city_1, city_2, center_2)
+      places.should_not == another_places
+    end
+
+    it "another place that one different city" do
+      another_places = Places.new(center_1, city_1, diferent_city, center_2)
+      places.should_not == another_places
+    end
+
+    it "another place that one extra city" do
+      another_places = Places.new(center_1, city_1, city_2, diferent_city, center_2)
+      places.should_not == another_places
+    end
+
+    it "another place that one less city" do
+      another_places = Places.new(center_1, city_1, center_2)
+      places.should_not == another_places
     end
   end
 end

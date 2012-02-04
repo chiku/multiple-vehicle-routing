@@ -9,7 +9,7 @@ describe Coordinates do
     Coordinates.new(10, 5).y.should == 5
   end
 
-  context "is equal to" do
+  context "equals" do
     it "itself" do
       c = Coordinates.new(2, 4)
       c.should == c
@@ -20,7 +20,7 @@ describe Coordinates do
     end
   end
 
-  context "is not equal to" do
+  context "doesn't equal" do
     it "coordinate with a different x" do
       Coordinates.new(2, 4).should_not == Coordinates.new(1, 4)
     end
