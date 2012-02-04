@@ -9,9 +9,10 @@ class Route
   attr_reader :places, :trips
   attr_accessor :permitted_load
 
-  def initialize(*places)
-    @places = Places.new *places
-    @old_places = places
+  def initialize(options = {})
+    @places = options[:places] || Places.new
+    @permitted_load = options[:permitted_load] || 0
+    @old_places = places.places
     split_into_trips
   end
 
@@ -23,7 +24,7 @@ class Route
   ]
 
   def valid?
-    not PLACES_VALIDATIONS.any?{ |validation| not places.send validation }
+    not PLACES_VALIDATIONS.any? { |validation| not places.send validation }
   end
 
   def ==(other)
@@ -50,7 +51,7 @@ class Route
   end
 
   def contains_trip?(trip)
-    trip.instance_of?(Trip) and trips.include?(trip)
+    trip.is_a? Trip and trips.include? trip
   end
 
   def to_s
