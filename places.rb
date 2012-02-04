@@ -21,6 +21,10 @@ class Places
     places.last or BlankPlace.new
   end
 
+  def has_center?
+    places.any?(&:center?)
+  end
+
   def ends_with_center?
     last_place.center?
   end
@@ -46,15 +50,16 @@ class Places
   end
   private :uniq_list?
 
+  def intermediates
+    Places.new *places[1..-2]
+  end
+
   def has_no_intermediate_center?
-    not places[1..-2].any?(&:center?)
+    not intermediates.has_center?
   end
 
   def has_no_consecutive_center?
-    places.each_with_index do |place, index|
-      return true if place.center? and places[index - 1].center?
-    end
-    false
+    places.each_cons(2).none? { |place_1, place_2| place_1.center? and place_2.center? }
   end
 
   def add place
@@ -79,13 +84,7 @@ class Places
     Places.new *places.reverse
   end
 
-  def intermediates
-    Places.new(*places[1..-2])
-  end
-
   def round_trip_distance
-    sum = 0
-    places.each_cons(2) { |from, to| sum += from.distance to }
-    sum
+    places.each_cons(2).reduce(0) { |sum, (from, to)| sum += from.distance to }
   end
 end

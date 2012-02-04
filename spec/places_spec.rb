@@ -48,6 +48,20 @@ describe Places do
     end
   end
 
+  context "has center" do
+    it "is true when a center is present" do
+      Places.new(city_1, center_1).should have_center
+    end
+
+    it "is false when no centers are present" do
+      Places.new(city_1, city_2).should_not have_center
+    end
+
+    it "is false when no places are present" do
+      Places.new.should_not have_center
+    end
+  end
+
   context "ends with center" do
     it "is true when the last place is a center" do
       Places.new(city_1, center_1).should be_ends_with_center
@@ -60,7 +74,7 @@ describe Places do
     it "is false when no places are present" do
       Places.new.should_not be_ends_with_center
     end
-  end 
+  end
 
   context "ends with city" do
     it "is true when the last place is a city" do
@@ -74,7 +88,7 @@ describe Places do
     it "is false when no places are present" do
       Places.new.should_not be_ends_with_city
     end
-  end 
+  end
 
   context "has same center at extremes" do
     it "is false when the last place is a city" do
@@ -133,12 +147,12 @@ describe Places do
   end
 
   context "has no consecutive centers" do
-    it "is true no centers are present together" do
-      Places.new(center_1, center_2, city_1).should have_no_consecutive_center
+    it "is true when no centers are present together" do
+      Places.new(center_1, center_2, city_1).should_not have_no_consecutive_center
     end
 
     it "is false when a center are separated by cities" do
-      Places.new(center_1, city_1, center_2, city_2).should_not have_no_consecutive_center
+      Places.new(center_1, city_1, center_2, city_2).should have_no_consecutive_center
     end
   end
 
