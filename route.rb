@@ -33,11 +33,11 @@ class Route
   end
 
   def total_distance
-    @trips.inject(0) {|distance, trip| distance + trip.round_trip_distance}
+    trips.reduce(0) { |acc, trip| acc + trip.round_trip_distance }
   end
 
   def total_overloads(load = permitted_load)
-    @trips.inject(0) {|overloads, trip| overloads + (trip.overloaded?(load) ? 1 : 0)}
+    trips.reduce(0) { |acc, trip| acc + (trip.overloaded?(load) ? 1 : 0) }
   end
 
   def fitter_than?(other_route)
@@ -58,22 +58,6 @@ class Route
   end
 
   private
-
-  def begins_with_center?
-    places.begins_with_center?
-  end
-
-  def ends_with_city?
-    places.ends_with_city?
-  end
-
-  def has_unique_places?
-    places.has_unique_places?
-  end
-
-  def has_no_consecutive_center?
-    places.has_no_consecutive_center?
-  end
 
   def split_into_trips
     @trips = [Trip.new(:places => Places.new(@old_places.first))]
