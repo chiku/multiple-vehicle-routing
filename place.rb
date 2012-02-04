@@ -26,7 +26,7 @@ end
 
 class BlankPlace
   def ==(other)
-    false
+    other.is_a? BlankPlace
   end
 
   def city?

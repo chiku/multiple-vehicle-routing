@@ -5,11 +5,11 @@ class Trip
   attr_reader :places
   attr_accessor :permitted_load
 
-  def initialize(*options)
+  def initialize(*options) # TODO clean this mess
     if options.first.is_a? Hash
       options = options.first
-      @places = options[:places]
-      @permitted_load = options[:permitted_load]
+      @places = options[:places] || Places.new
+      @permitted_load = options[:permitted_load] || 0
     else
       all_places = *options
       @places = Places.new *all_places

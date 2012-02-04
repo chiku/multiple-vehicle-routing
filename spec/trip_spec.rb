@@ -111,7 +111,7 @@ describe Trip do
       trip.add center_1
       trip.add city_1
       trip.add center_1
-      trip.should == Trip.new(center_1, city_1, center_1)
+      trip.should == Trip.new(:places => Places.new(center_1, city_1, center_1))
     end
   end
 
@@ -139,8 +139,8 @@ describe Trip do
 
   context "THIS SPEC SHOULD BE DELETED" do
     it "should know the total overloads of the route and pick permitted loads from attributes" do
-      trip = Trip.new(center_1, city_1, center_1)
-      trip.permitted_load = 5
+      trip = Trip.new(:places => Places.new(center_1, city_1, center_1))
+      trip.permitted_load = 5 # UGLY INJECTION
       trip.overloaded?.should be_false
     end
   end
