@@ -142,12 +142,4 @@ describe Trip do
       Trip.new(:places => Places.new(center_1, city_1, city_2, center_1), :permitted_load => 12).should_not be_overloaded
     end
   end
-
-  describe "THIS SPEC SHOULD BE DELETED" do
-    it "should know the total overloads of the route and pick permitted loads from attributes" do
-      trip = Trip.new(:places => Places.new(center_1, city_1, center_1))
-      trip.permitted_load = 5 # UGLY INJECTION
-      trip.overloaded?.should be_false
-    end
-  end
 end

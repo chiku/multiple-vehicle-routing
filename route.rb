@@ -33,7 +33,7 @@ class Route
   end
 
   def total_overloads
-    trips.reduce(0) { |acc, trip| acc + (trip.overloaded?(permitted_load) ? 1 : 0) }
+    trips.reduce(0) { |acc, trip| acc + (trip.overloaded? ? 1 : 0) }
   end
 
   def fitter_than?(other_route)
@@ -41,7 +41,7 @@ class Route
   end
 
   def contains_trips?(trip_list)
-    trip_list.size == trips.size and (trip_list.collect{|trip| contains_trip?(trip)}).inject{|result, item| result and item}
+    trip_list.size == trips.size and (trip_list.collect{ |trip| contains_trip? trip }).inject{ |result, item| result and item }
   end
 
   def contains_trip?(trip)
@@ -59,7 +59,7 @@ class Route
   end
 
   def split_into_trips
-    @trips = places.split_by_leading_center.map{ |places| Trip.new :places => places.replicate_first_place_to_end }
+    @trips = places.split_by_leading_center.map{ |places| Trip.new :places => places.replicate_first_place_to_end, :permitted_load => permitted_load }
   end
   private :split_into_trips
 end

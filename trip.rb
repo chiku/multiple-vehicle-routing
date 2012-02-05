@@ -3,8 +3,7 @@ require File.dirname(__FILE__) + '/center'
 require File.dirname(__FILE__) + '/city'
 
 class Trip
-  attr_reader :places
-  attr_accessor :permitted_load
+  attr_reader :places, :permitted_load
 
   extend Forwardable
 
@@ -44,7 +43,7 @@ class Trip
     cities.places.map(&:capacity).reduce(0, &:+)
   end
 
-  def overloaded?(load=permitted_load) #TODO remove parameter
-    total_load > load
+  def overloaded?
+    total_load > permitted_load
   end
 end
