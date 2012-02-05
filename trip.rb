@@ -37,11 +37,11 @@ class Trip
   end
 
   def cities
-    places.intermediates.places # TODO deal with object
+    places.intermediates
   end
 
   def total_load
-    cities.map(&:capacity).reduce(0, &:+)
+    cities.places.map(&:capacity).reduce(0, &:+)
   end
 
   def overloaded?(load=permitted_load) #TODO remove parameter

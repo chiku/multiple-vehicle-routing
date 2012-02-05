@@ -18,7 +18,7 @@ describe Trip do
   describe "cities" do
     it "are the intermediate places" do
       places = Places.new center_1, city_1, city_2, center_1
-      Trip.new(:places => places).cities.should == [city_1, city_2]
+      Trip.new(:places => places).cities.should == Places.new(city_1, city_2)
     end
   end
 

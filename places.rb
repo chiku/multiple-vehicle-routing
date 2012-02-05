@@ -9,16 +9,20 @@ class Places
     @places = places
   end
 
+  def at(location)
+    places.at(location) or BlankPlace.new
+  end
+
   def first_place
-    places.first or BlankPlace.new
+    at(0)
+  end
+
+  def last_place
+    at(-1)
   end
 
   def begins_with_center?
     first_place.center?
-  end
-
-  def last_place
-    places.last or BlankPlace.new
   end
 
   def has_center?
@@ -100,6 +104,10 @@ class Places
     (places[position_1].city? and places[position_2].city?) or (places[position_1].center? and places[position_2].center?)
   end
 
+  def interchange_positions_on_equivalence!(position_1, position_2)
+    interchange_positions!(position_1, position_2) if equivalent_positions?(position_1, position_2)
+  end
+
   def replicate_first_place_to_end
     add first_place
     self
@@ -109,8 +117,8 @@ class Places
     splits = []
 
     places.each do |place|
-      splits.last.add place if place.city? and not splits.empty?
       splits << Places.new(place) if place.center?
+      splits.last.add place if place.city? and not splits.empty?
     end
 
     splits

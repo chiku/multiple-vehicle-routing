@@ -7,6 +7,19 @@ describe Places do
   let(:center_1) { Center.new(:name => 'A', :coordinates => Coordinates.new(0, 3), :capacity => 5) }
   let(:center_2) { Center.new(:name => 'B', :coordinates => Coordinates.new(0, 4), :capacity => 6) }
 
+  describe "at a specified location" do
+    let(:places) { Places.new(center_1, city_1) }
+
+    it "is the place with leading place having location as zero" do
+      places.at(0).should == center_1
+      places.at(1).should == city_1
+    end
+
+    it "is nothing when out of range" do
+      places.at(2).should  be_instance_of BlankPlace
+    end
+  end
+
   describe "first place" do
     it "is the place that occurs at the beginning" do
       Places.new(center_1, city_1).first_place.should == center_1
@@ -14,6 +27,16 @@ describe Places do
 
     it "is not present in empty places" do
       Places.new.first_place.should be_instance_of(BlankPlace)
+    end
+  end
+
+  describe "last place" do
+    it "is the place that occurs at the end" do
+      Places.new(center_1, city_1).last_place.should == city_1
+    end
+
+    it "is not present in empty places" do
+      Places.new.last_place.should be_instance_of(BlankPlace)
     end
   end
 
@@ -30,16 +53,6 @@ describe Places do
       Places.new.should_not be_begins_with_center
     end
   end 
-
-  describe "last place" do
-    it "is the place that occurs at the end" do
-      Places.new(center_1, city_1).last_place.should == city_1
-    end
-
-    it "is not present in empty places" do
-      Places.new.last_place.should be_instance_of(BlankPlace)
-    end
-  end
 
   describe "intermediates" do
     it "gives the places except the extremes" do
@@ -262,19 +275,7 @@ describe Places do
   end
 
   describe "interchange positions" do
-    it "exchange two cities" do
-      places = Places.new(center_1, city_1, city_2)
-      places.interchange_positions!(1, 2)
-      places.places.should == [center_1, city_2, city_1]
-    end
-
-    it "exchange two centers" do
-      places = Places.new(center_1, city_1, center_2)
-      places.interchange_positions!(0, 2)
-      places.places.should == [center_2, city_1, center_1]
-    end
-
-    it "exchange a city and a center" do
+    it "exchanges two places" do
       places = Places.new(center_1, city_1, city_2)
       places.interchange_positions!(0, 1)
       places.places.should == [city_1, center_1, city_2]
@@ -292,6 +293,26 @@ describe Places do
 
     it "is false when the places refered by positions are a city and a center" do
       Places.new(center_1, city_1, city_2).should_not be_equivalent_positions(0, 2)
+    end
+  end
+
+  describe "interchange positions on equivalence" do
+    it "exchanges two cites" do
+      places = Places.new(center_1, city_1, city_2)
+      places.interchange_positions_on_equivalence!(1, 2)
+      places.places.should == [center_1, city_2, city_1]
+    end
+
+    it "exchanges two centers" do
+      places = Places.new(center_1, city_1, center_2)
+      places.interchange_positions_on_equivalence!(0, 2)
+      places.places.should == [center_2, city_1, center_1]
+    end
+
+    it "doesn't exchange a city and a center" do
+      places = Places.new(center_1, city_1, city_2)
+      places.interchange_positions_on_equivalence!(0, 1)
+      places.places.should == [center_1, city_1, city_2]
     end
   end
 

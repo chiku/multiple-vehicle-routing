@@ -37,8 +37,7 @@ class Route
   end
 
   def fitter_than?(other_route)
-    return (total_distance < other_route.total_distance) if total_overloads == other_route.total_overloads
-    total_overloads < other_route.total_overloads
+    (total_overloads == other_route.total_overloads) ? (total_distance < other_route.total_distance) : (total_overloads < other_route.total_overloads)
   end
 
   def contains_trips?(trip_list)
@@ -46,7 +45,7 @@ class Route
   end
 
   def contains_trip?(trip)
-    trip.is_a? Trip and trips.include? trip
+    trip.instance_of? Trip and trips.include? trip
   end
 
   def to_s
@@ -54,14 +53,13 @@ class Route
   end
 
   def mutate!
-    position_1, position_2 = rand(places.size), rand(places.size)
-    places.interchange_positions!(position_1, position_2) if places.equivalent_positions?(position_1, position_2)
+    places.interchange_positions_on_equivalence!(rand(places.size), rand(places.size))
     split_into_trips
     self
   end
 
   def split_into_trips
-    @trips = places.split_by_leading_center.map(&:replicate_first_place_to_end).map{ |places| Trip.new :places => places }
+    @trips = places.split_by_leading_center.map{ |places| Trip.new :places => places.replicate_first_place_to_end }
   end
   private :split_into_trips
 end
