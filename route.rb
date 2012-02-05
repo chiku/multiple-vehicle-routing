@@ -33,7 +33,7 @@ class Route
   end
 
   def total_overloads
-    trips.reduce(0) { |acc, trip| acc + (trip.overloaded? ? 1 : 0) }
+    trips.count(&:overloaded?)
   end
 
   def fitter_than?(other_route)
@@ -41,11 +41,11 @@ class Route
   end
 
   def contains_trips?(trip_list)
-    trip_list.size == trips.size and (trip_list.collect{ |trip| contains_trip? trip }).inject{ |result, item| result and item }
+    trip_list.size == trips.size and trip_list.all?{ |trip| contains_trip? trip }
   end
 
   def contains_trip?(trip)
-    trip.instance_of? Trip and trips.include? trip
+    trips.include? trip
   end
 
   def to_s
