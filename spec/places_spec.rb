@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe Places do
   let(:city_1) { City.new(:name => 'a', :coordinates => Coordinates.new(0, 1), :capacity => 5) }
   let(:city_2) { City.new(:name => 'b', :coordinates => Coordinates.new(0, 2), :capacity => 6) }
+  let(:city_3) { City.new(:name => 'b', :coordinates => Coordinates.new(0, 7), :capacity => 5) }
   let(:center_1) { Center.new(:name => 'A', :coordinates => Coordinates.new(0, 3), :capacity => 5) }
   let(:center_2) { Center.new(:name => 'B', :coordinates => Coordinates.new(0, 4), :capacity => 6) }
 
@@ -251,6 +252,55 @@ describe Places do
     it "is the sum of distance between two consecutive places" do
       Places.new(center_1, city_1, center_1).round_trip_distance.should == 4.0
       Places.new(center_2, city_1, city_2, center_2).round_trip_distance.should == 6.0
+    end
+  end
+
+  describe "size" do
+    it "is the number of places present" do
+      Places.new(center_1, city_1, city_2).size.should == 3
+    end
+  end
+
+  describe "interchange positions" do
+    it "exchange two cities" do
+      places = Places.new(center_1, city_1, city_2)
+      places.interchange_positions!(1, 2)
+      places.places.should == [center_1, city_2, city_1]
+    end
+
+    it "exchange two centers" do
+      places = Places.new(center_1, city_1, center_2)
+      places.interchange_positions!(0, 2)
+      places.places.should == [center_2, city_1, center_1]
+    end
+
+    it "exchange a city and a center" do
+      places = Places.new(center_1, city_1, city_2)
+      places.interchange_positions!(0, 1)
+      places.places.should == [city_1, center_1, city_2]
+    end
+  end
+
+  describe "equivalent positions" do
+    it "is true when the places refered by positions are cities" do
+      Places.new(center_1, city_1, city_2).should be_equivalent_positions(1, 2)
+    end
+
+    it "is true when the places refered by positions are centers" do
+      Places.new(center_1, city_1, center_2, city_2).should be_equivalent_positions(0, 2)
+    end
+
+    it "is false when the places refered by positions are a city and a center" do
+      Places.new(center_1, city_1, city_2).should_not be_equivalent_positions(0, 2)
+    end
+  end
+
+  describe "split by leading center" do
+    xit "gives an array of the cities separated by its leading center" do
+      sub_places = Places.new(center_1, city_1, city_2, center_2, city_3).split_by_leading_center
+      sub_places.should have(2).things
+      sub_places.places[0].should == [center_1, city_1, city_2]
+      sub_places.places[1].should == [center_2, city_3]
     end
   end
 end

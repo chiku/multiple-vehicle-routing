@@ -87,4 +87,16 @@ class Places
   def round_trip_distance
     places.each_cons(2).map{ |from, to| from.distance to }.reduce(0, &:+)
   end
+
+  def size
+    places.size
+  end
+
+  def interchange_positions!(position_1, position_2)
+    places[position_1], places[position_2] = places[position_2], places[position_1]
+  end
+
+  def equivalent_positions?(position_1, position_2)
+    (places[position_1].city? and places[position_2].city?) or (places[position_1].center? and places[position_2].center?)
+  end
 end

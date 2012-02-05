@@ -54,20 +54,11 @@ class Route
   end
 
   def mutate!
-    position_1, position_2 = rand(places.places.size), rand(places.places.size)
-
-    if position_1 != position_2 and mutation_agreable? position_1, position_2
-      places.places[position_1], places.places[position_2] = places.places[position_2], places.places[position_1]
-      split_into_trips
-    end
-
+    position_1, position_2 = rand(places.size), rand(places.size)
+    places.interchange_positions!(position_1, position_2) if places.equivalent_positions?(position_1, position_2)
+    split_into_trips
     self
   end
-
-  def mutation_agreable? position_1, position_2
-    (places.places[position_1].city? and places.places[position_2].city?) or (places.places[position_1].center? and places.places[position_2].center?)
-  end
-  private :mutation_agreable?
 
   def split_into_trips
     @trips = [Trip.new(:places => Places.new(places.first_place))]
