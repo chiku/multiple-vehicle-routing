@@ -9,7 +9,7 @@ describe Coordinates do
     Coordinates.new(10, 5).y.should == 5
   end
 
-  context "equals" do
+  describe "equals" do
     it "itself" do
       c = Coordinates.new(2, 4)
       c.should == c
@@ -20,7 +20,7 @@ describe Coordinates do
     end
   end
 
-  context "doesn't equal" do
+  describe "doesn't equal" do
     it "coordinate with a different x" do
       Coordinates.new(2, 4).should_not == Coordinates.new(1, 4)
     end
@@ -42,7 +42,7 @@ describe Coordinates do
     Coordinates.new(2, 3).distance_from(Coordinates.new(5, 7)).should == 5
   end
 
-  context "hash" do
+  describe "hash" do
     it "is equal when identical" do
       c1 = Coordinates.new(1, 3)
       c2 = Coordinates.new(1, 3)

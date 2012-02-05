@@ -8,28 +8,28 @@ describe Trip do
   let(:center_1) { Center.new(:name => 'A', :coordinates => Coordinates.new(0, 3), :capacity => 5) }
   let(:center_2) { Center.new(:name => 'B', :coordinates => Coordinates.new(0, 4), :capacity => 6) }
 
-  context "center" do
+  describe "center" do
     it "is the first place" do
       places = Places.new center_1, city_1, city_2, center_1
       Trip.new(:places => places).center.should == center_1
     end
   end
 
-  context "cities" do
+  describe "cities" do
     it "are the intermediate places" do
       places = Places.new center_1, city_1, city_2, center_1
       Trip.new(:places => places).cities.should == [city_1, city_2]
     end
   end
 
-  context "to_s" do
+  describe "to_s" do
     it "serializes to string representaion of places" do
       places = Places.new center_1, city_1, city_2, center_1
       Trip.new(:places => places).to_s.should == places.to_s
     end
   end
 
-  context "is not valid when it" do
+  describe "is not valid when it" do
     it "begins with city" do
       Trip.new(:places => Places.new(city_1, center_1)).should_not be_valid
     end
@@ -55,13 +55,13 @@ describe Trip do
     end
   end
 
-  context "is valid when it" do
+  describe "is valid when it" do
     it "begins and end with same center with unique intermediate cities" do
       Trip.new(:places => Places.new(center_1, city_1, city_2, center_1)).should be_valid
     end
   end
 
-  context "doesn't equal" do
+  describe "doesn't equal" do
     let(:places) { Places.new(center_1, city_1, city_2, city_3, center_1) }
     let(:trip) { Trip.new :places => places }
 
@@ -89,7 +89,7 @@ describe Trip do
     end
   end
 
-  context "equals" do
+  describe "equals" do
     let(:trip) { Trip.new :places => Places.new(center_1, city_1, city_2, city_3, center_1) }
 
     it "itself" do
@@ -105,7 +105,7 @@ describe Trip do
     end
   end
 
-  context "add" do
+  describe "add" do
     it "builds a trip from centers and cities" do
       trip = Trip.new
       trip.add center_1
@@ -115,25 +115,25 @@ describe Trip do
     end
   end
 
-  context "round trip distance" do
+  describe "round trip distance" do
     it "is the round-trip distance for the places" do
       Trip.new(:places => Places.new(center_1, city_1, center_1)).round_trip_distance.should == 4
     end
   end
 
-  context "total lod" do
+  describe "total lod" do
     it "is the sum of the capacity for all cities" do
       Trip.new(:places => Places.new(center_1, city_1, city_2, center_1), :permitted_load => 5).total_load.should == 11
     end
   end
 
-  context "is overloaded" do
+  describe "is overloaded" do
     it "when all sum of capacity for all cities exceeds the permitted load" do
       Trip.new(:places => Places.new(center_1, city_2, center_1), :permitted_load => 5).should be_overloaded
     end
   end
 
-  context "is not overloaded" do
+  describe "is not overloaded" do
     it "when all sum of capacity for all cities equals the permitted load" do
       Trip.new(:places => Places.new(center_1, city_1, center_1), :permitted_load => 5).should_not be_overloaded
     end
@@ -143,7 +143,7 @@ describe Trip do
     end
   end
 
-  context "THIS SPEC SHOULD BE DELETED" do
+  describe "THIS SPEC SHOULD BE DELETED" do
     it "should know the total overloads of the route and pick permitted loads from attributes" do
       trip = Trip.new(:places => Places.new(center_1, city_1, center_1))
       trip.permitted_load = 5 # UGLY INJECTION

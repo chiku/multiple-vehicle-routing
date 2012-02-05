@@ -6,7 +6,7 @@ describe Places do
   let(:center_1) { Center.new(:name => 'A', :coordinates => Coordinates.new(0, 3), :capacity => 5) }
   let(:center_2) { Center.new(:name => 'B', :coordinates => Coordinates.new(0, 4), :capacity => 6) }
 
-  context "first place" do
+  describe "first place" do
     it "is the place that occurs at the beginning" do
       Places.new(center_1, city_1).first_place.should == center_1
     end
@@ -16,7 +16,7 @@ describe Places do
     end
   end
 
-  context "begins with center" do
+  describe "begins with center" do
     it "is true when the first place is a center" do
       Places.new(center_1, city_1).should be_begins_with_center
     end
@@ -30,7 +30,7 @@ describe Places do
     end
   end 
 
-  context "last place" do
+  describe "last place" do
     it "is the place that occurs at the end" do
       Places.new(center_1, city_1).last_place.should == city_1
     end
@@ -40,7 +40,7 @@ describe Places do
     end
   end
 
-  context "intermediates" do
+  describe "intermediates" do
     it "gives the places except the extremes" do
       places = Places.new(center_1, city_1, city_2, center_1)
       intermediate_places = Places.new(city_1, city_2)
@@ -48,7 +48,7 @@ describe Places do
     end
   end
 
-  context "has center" do
+  describe "has center" do
     it "is true when a center is present" do
       Places.new(city_1, center_1).should have_center
     end
@@ -62,7 +62,7 @@ describe Places do
     end
   end
 
-  context "ends with center" do
+  describe "ends with center" do
     it "is true when the last place is a center" do
       Places.new(city_1, center_1).should be_ends_with_center
     end
@@ -76,7 +76,7 @@ describe Places do
     end
   end
 
-  context "ends with city" do
+  describe "ends with city" do
     it "is true when the last place is a city" do
       Places.new(center_1, city_1).should be_ends_with_city
     end
@@ -90,7 +90,7 @@ describe Places do
     end
   end
 
-  context "has same center at extremes" do
+  describe "has same center at extremes" do
     it "is false when the last place is a city" do
       Places.new(center_1, city_1).should_not have_same_center_at_extremes
     end
@@ -108,7 +108,7 @@ describe Places do
     end
   end
 
-  context "has unique cities" do
+  describe "has unique cities" do
     it "is false when a city is present twice" do
       Places.new(city_1, city_1).should_not have_unique_cities
     end
@@ -122,7 +122,7 @@ describe Places do
     end
   end
 
-  context "has unique places" do
+  describe "has unique places" do
     it "is false when a city is present twice" do
       Places.new(center_1, city_1, city_1).should_not have_unique_places
     end
@@ -136,7 +136,7 @@ describe Places do
     end
   end
 
-  context "has no intermediate center" do
+  describe "has no intermediate center" do
     it "is true no centers are present in the middle" do
       Places.new(center_1, city_1, center_1).should have_no_intermediate_center
     end
@@ -146,7 +146,7 @@ describe Places do
     end
   end
 
-  context "has no consecutive centers" do
+  describe "has no consecutive centers" do
     it "is true when no centers are present together" do
       Places.new(center_1, center_2, city_1).should_not have_no_consecutive_center
     end
@@ -156,7 +156,7 @@ describe Places do
     end
   end
 
-  context "add" do
+  describe "add" do
     it "builds up the places" do
       places = Places.new
       places.add center_1
@@ -166,13 +166,13 @@ describe Places do
     end
   end
 
-  context "to_s" do
+  describe "to_s" do
     it "serialize to a string" do
       Places.new(center_1, city_1, city_2, center_1).to_s.should == "(A -> a -> b -> A)"
     end
   end
 
-  context "equals" do
+  describe "equals" do
     let(:places) { Places.new(center_1, city_1, city_2, center_1) }
 
     it "itself" do
@@ -185,7 +185,7 @@ describe Places do
     end
   end
 
-  context "reverse" do
+  describe "reverse" do
     it "is the list of places read backwards" do
       reversed_places = Places.new(center_1, city_1, city_2, center_1).reverse
 
@@ -198,7 +198,7 @@ describe Places do
     end
   end
 
-  context "doesn't equal" do
+  describe "doesn't equal" do
     let(:places) { Places.new(center_1, city_1, city_2, center_1) }
     let(:diferent_city) { City.new(:name => 'c', :coordinates => Coordinates.new(0, -2), :capacity => 6) }
 
@@ -241,13 +241,13 @@ describe Places do
     end
   end
 
-  context "hash" do
+  describe "hash" do
     it "is same hash for when equal" do
       Places.new(center_1, city_1, center_1).hash == Places.new(center_1, city_1, center_1).hash
     end
   end
 
-  context "round trip distance" do
+  describe "round trip distance" do
     it "is the sum of distance between two consecutive places" do
       Places.new(center_1, city_1, center_1).round_trip_distance.should == 4.0
       Places.new(center_2, city_1, city_2, center_2).round_trip_distance.should == 6.0
