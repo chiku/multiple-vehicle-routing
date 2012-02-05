@@ -20,10 +20,7 @@ describe City do
     place.should_not be_center
   end
 
-  let(:klass) { Center }
-  let(:other_klass) { City }
+  it_should_behave_like "Place distance checks", City, Center
 
-  it_should_behave_like "Place distance checks"
-
-  it_should_behave_like "Place equivalence checks"
+  it_should_behave_like "Place equivalence checks", City, Center
 end
