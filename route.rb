@@ -61,26 +61,7 @@ class Route
   end
 
   def split_into_trips
-    @trips = [Trip.new(:places => Places.new(places.first_place))]
-
-    current_trip = 0
-    places.places[1, places.places.size].each do |place|
-      if place.city?
-        add_to_trip_number(place, current_trip)
-      end
-      if place.center?
-        add_to_trip_number(trips[current_trip].center, current_trip)
-        current_trip += 1
-        trips << Trip.new(:places => Places.new(place))
-      end
-    end
-
-    add_to_trip_number(trips[current_trip].center, current_trip)
+    @trips = places.split_by_leading_center.map(&:replicate_first_place_to_end).map{ |places| Trip.new :places => places }
   end
   private :split_into_trips
-
-  def add_to_trip_number(place, trip_number)
-    trips[trip_number].add(place)
-  end
-  private :add_to_trip_number
 end

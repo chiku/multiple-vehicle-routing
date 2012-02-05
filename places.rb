@@ -99,4 +99,20 @@ class Places
   def equivalent_positions?(position_1, position_2)
     (places[position_1].city? and places[position_2].city?) or (places[position_1].center? and places[position_2].center?)
   end
+
+  def replicate_first_place_to_end
+    add first_place
+    self
+  end
+
+  def split_by_leading_center
+    splits = []
+
+    places.each do |place|
+      splits.last.add place if place.city? and not splits.empty?
+      splits << Places.new(place) if place.center?
+    end
+
+    splits
+  end
 end

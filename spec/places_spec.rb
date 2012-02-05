@@ -295,12 +295,26 @@ describe Places do
     end
   end
 
+  describe "replicate first place to end" do
+    it "copies over copies over the beginning place to the end" do
+      places = Places.new(center_1, city_1, city_2)
+      places.replicate_first_place_to_end.should == Places.new(center_1, city_1, city_2, center_1)
+      places.places.should == [center_1, city_1, city_2, center_1]
+    end
+  end
+
   describe "split by leading center" do
-    xit "gives an array of the cities separated by its leading center" do
+    it "gives an array of the cities separated by its leading center" do
       sub_places = Places.new(center_1, city_1, city_2, center_2, city_3).split_by_leading_center
       sub_places.should have(2).things
-      sub_places.places[0].should == [center_1, city_1, city_2]
-      sub_places.places[1].should == [center_2, city_3]
+      sub_places[0].places.should == [center_1, city_1, city_2]
+      sub_places[1].places.should == [center_2, city_3]
+    end
+
+    it "doesn't include cities without a leading center" do
+      sub_places = Places.new(city_1, city_2, center_2, city_3).split_by_leading_center
+      sub_places.should have(1).things
+      sub_places[0].places.should == [center_2, city_3]
     end
   end
 end
