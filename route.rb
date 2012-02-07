@@ -1,12 +1,11 @@
-require File.dirname(__FILE__) + '/center'
-require File.dirname(__FILE__) + '/city'
+require File.dirname(__FILE__) + '/places'
 require File.dirname(__FILE__) + '/trip'
 
 class Route
   attr_reader :places, :trips, :permitted_load
 
   def initialize(options = {})
-    @places = options[:places] || Places.new
+    @places         = options[:places]         || Places.new
     @permitted_load = options[:permitted_load] || 0
     split_into_trips
   end
@@ -19,7 +18,7 @@ class Route
   ]
 
   def valid?
-    not PLACES_VALIDATIONS.any? { |validation| not places.send validation }
+    PLACES_VALIDATIONS.all? { |validation| places.send validation }
   end
 
   def ==(other)

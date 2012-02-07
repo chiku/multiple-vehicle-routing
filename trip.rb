@@ -1,6 +1,4 @@
 require 'forwardable'
-require File.dirname(__FILE__) + '/center'
-require File.dirname(__FILE__) + '/city'
 
 class Trip
   attr_reader :places, :permitted_load
@@ -8,7 +6,7 @@ class Trip
   extend Forwardable
 
   def initialize(options = {})
-    @places = options[:places] || Places.new
+    @places         = options[:places]         || Places.new
     @permitted_load = options[:permitted_load] || 0
   end
 
@@ -20,7 +18,7 @@ class Trip
   ]
 
   def valid?
-    not PLACES_VALIDATIONS.any?{ |validation| not places.send validation }
+    PLACES_VALIDATIONS.all? { |validation| places.send validation }
   end
 
   def ==(other)

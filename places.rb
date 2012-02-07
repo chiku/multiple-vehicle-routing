@@ -1,6 +1,4 @@
 require File.dirname(__FILE__) + '/place'
-require File.dirname(__FILE__) + '/city'
-require File.dirname(__FILE__) + '/center'
 
 class Places
   attr_reader :places

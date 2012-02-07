@@ -4,9 +4,9 @@ class Place
   attr_accessor :name, :coordinates, :capacity
 
   def initialize(options)
-    @name = options[:name]
+    @name        = options[:name]
     @coordinates = options[:coordinates]
-    @capacity = options[:capacity]
+    @capacity    = options[:capacity]
   end
 
   def ==(other)
