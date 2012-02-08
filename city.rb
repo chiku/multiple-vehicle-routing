@@ -8,4 +8,8 @@ class City < Place
   def center?
     false
   end
+
+  def handle_splits_for_trips(splits)
+    splits.last << self
+  end
 end

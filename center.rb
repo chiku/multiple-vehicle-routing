@@ -8,4 +8,8 @@ class Center < Place
   def center?
     true
   end
+
+  def handle_splits_for_trips(splits)
+    splits << Places.new(self)
+  end
 end

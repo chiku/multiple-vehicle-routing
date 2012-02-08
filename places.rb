@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/place'
+require File.dirname(__FILE__) + '/blank_place'
 
 class Places
   attr_reader :places
@@ -64,7 +65,7 @@ class Places
     places.each_cons(2).none? { |place_1, place_2| place_1.center? and place_2.center? }
   end
 
-  def add place
+  def <<(place)
     places << place
   end
 
@@ -107,18 +108,13 @@ class Places
   end
 
   def replicate_first_place_to_end
-    add first_place
+    self << first_place
     self
   end
 
   def split_by_leading_center
     splits = []
-
-    places.each do |place|
-      splits << Places.new(place) if place.center?
-      splits.last.add place if place.city? and not splits.empty?
-    end
-
+    places.drop_while(&:city?).each { |place| place.handle_splits_for_trips(splits) }
     splits
   end
 end

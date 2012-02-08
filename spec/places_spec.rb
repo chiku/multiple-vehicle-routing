@@ -173,8 +173,8 @@ describe Places do
   describe "add" do
     it "builds up the places" do
       places = Places.new
-      places.add center_1
-      places.add city_1
+      places << center_1
+      places << city_1
       places.places[0].should == center_1
       places.places[1].should == city_1
     end

@@ -105,12 +105,12 @@ describe Trip do
     end
   end
 
-  describe "add" do
+  describe "<<" do
     it "builds a trip from centers and cities" do
       trip = Trip.new
-      trip.add center_1
-      trip.add city_1
-      trip.add center_1
+      trip << center_1
+      trip << city_1
+      trip << center_1
       trip.should == Trip.new(:places => Places.new(center_1, city_1, center_1))
     end
   end

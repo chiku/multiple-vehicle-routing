@@ -23,17 +23,3 @@ class Place
     @distance = @coordinates.distance_from place.coordinates
   end
 end
-
-class BlankPlace
-  def ==(other)
-    other.is_a? BlankPlace
-  end
-
-  def city?
-    false
-  end
-
-  def center?
-    false
-  end
-end

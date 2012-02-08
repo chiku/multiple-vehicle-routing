@@ -27,7 +27,7 @@ class Trip
     places == other.places or places.reverse == other.places
   end
 
-  def_delegators :places, :add, :hash, :to_s, :round_trip_distance
+  def_delegators :places, :<<, :hash, :to_s, :round_trip_distance
 
   def center
     places.first_place
