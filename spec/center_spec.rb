@@ -20,4 +20,24 @@ describe Center do
   end
 
   it_should_behave_like "Place", Center, City
+
+  describe "on handle split for trips" do
+    before :each do
+      @another_center = Center.new(:coordinates => Coordinates.new(10, 5), :name => 'O')
+      @places_list = [Places.new(@another_center)]
+      place.handle_splits_for_trips @places_list
+    end
+
+    it "adds a new places to the list of places" do
+      @places_list.should have(2).thing
+    end
+
+    it "add a new places containng the center to the end" do
+      @places_list.last.places.should == [place]
+    end
+
+    it "doesn't modify earlier places" do
+      @places_list.first.places.should == [@another_center]
+    end
+  end
 end

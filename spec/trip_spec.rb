@@ -23,9 +23,9 @@ describe Trip do
   end
 
   describe "to_s" do
-    it "serializes to string representaion of places" do
+    it "serializes to a string representaion" do
       places = Places.new center_1, city_1, city_2, center_1
-      Trip.new(:places => places).to_s.should == places.to_s
+      Trip.new(:places => places).to_s.should == "(A -> a -> b -> A)[11]"
     end
   end
 

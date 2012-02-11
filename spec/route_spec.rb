@@ -86,7 +86,7 @@ describe Route do
 
   describe "Serialization" do
     it "should be serialize to string" do
-      Route.new(:places => Places.new(center_1, city_1, center_2, city_2)).to_s.should == "(A -> a -> A) (B -> b -> B)"
+      Route.new(:places => Places.new(center_1, city_1, center_2, city_2)).to_s.should == "(A -> a -> A)[5] (B -> b -> B)[6] => [2:8.00]"
     end
   end
 

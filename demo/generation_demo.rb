@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require File.join(File.expand_path(File.dirname(__FILE__)), "..", "route.rb")
 require File.join(File.expand_path(File.dirname(__FILE__)), "..", "places.rb")
 require File.join(File.expand_path(File.dirname(__FILE__)), "..", "center.rb")
