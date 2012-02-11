@@ -1,6 +1,5 @@
 require File.dirname(__FILE__) + '/spec_helper'
-require File.dirname(__FILE__) + '/place_distance_checks'
-require File.dirname(__FILE__) + '/place_equivalence_checks'
+require File.dirname(__FILE__) + '/place_checks'
 
 describe City do
   let(:coordinates) { Coordinates.new 1, 2 }
@@ -20,7 +19,5 @@ describe City do
     place.should_not be_center
   end
 
-  it_should_behave_like "Place distance checks", City, Center
-
-  it_should_behave_like "Place equivalence checks", City, Center
+  it_should_behave_like "Place", City, Center
 end
