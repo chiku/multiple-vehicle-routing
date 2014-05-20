@@ -7,31 +7,33 @@ describe Route do
   let(:center_1) { Center.new(:name => 'A', :coordinates => Coordinates.new(0, 3), :capacity => 5) }
   let(:center_2) { Center.new(:name => 'B', :coordinates => Coordinates.new(0, 4), :capacity => 6) }
 
-  describe "Validity" do
-    it "should not be valid if it begins with a city" do
+  describe "is not valid when" do
+    it "it begins with a city" do
       Route.new(:places => Places.new(city_1, city_2)).should_not be_valid
     end
 
-    it "should not be valid if it ends with a center" do
+    it "it ends with a center" do
       Route.new(:places => Places.new(center_1, city_1, center_2)).should_not be_valid
     end
 
-    it "should not be valid if a city is repeated" do
+    it "a city is repeated" do
       Route.new(:places => Places.new(center_1, city_1, center_2, city_1)).should_not be_valid
-   end
+    end
 
-    it "should not be valid if a center is repeated" do
+    it "a center is repeated" do
       Route.new(:places => Places.new(center_1, city_1, center_1, city_2)).should_not be_valid
-   end
+    end
 
-    it "should not be valid if two centers occur together" do
+    it "two centers occur together" do
       Route.new(:places => Places.new(center_1, center_2, city_2)).should_not be_valid
-   end
+    end
+  end
 
-    it "should be valid for a proper route" do
+   describe "is valid when" do
+    it "it begins with a center, ends with a city and all centers have at least one intermediate city" do
       Route.new(:places => Places.new(center_1, city_1, center_2, city_2)).should be_valid
       Route.new(:places => Places.new(center_1, city_1)).should be_valid
-   end
+    end
   end
 
   describe "Trips" do
@@ -84,44 +86,50 @@ describe Route do
     end
   end
 
-  describe "Serialization" do
-    it "should be serialize to string" do
+  describe "to_s" do
+    it "serializes to a string representation" do
       Route.new(:places => Places.new(center_1, city_1, center_2, city_2)).to_s.should == "(A -> a -> A)[5] (B -> b -> B)[6] => [2:8.00]"
     end
   end
 
-  describe "Equality" do
-    it "should be equal when they are identical" do
+  describe "equals" do
+    it "itself" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
       route.should == route
     end
 
-    it "should not be equal to nil" do
+    context "another route" do
+      it "which is identical" do
+        route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
+        route_2 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
+        route_1.should == route_2
+      end
+    end
+  end
+
+  describe "doesn't equal" do
+    it "nil" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
       route.should_not == nil
     end
 
-    it "should not be equal to other object of another class" do
+    it "an object of another class" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
       route.should_not == 'route'
     end
 
-    it "should not be equal to when the number of trips are different" do
-      route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      route_2 = Route.new(:places => Places.new(center_1, city_1, city_2))
-      route_1.should_not == route_2
-    end
+    context "another route with" do
+      it "different number of trips" do
+        route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
+        route_2 = Route.new(:places => Places.new(center_1, city_1, city_2))
+        route_1.should_not == route_2
+      end
 
-    it "should not be equal to when a city present in one trip is different" do
-      route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      route_2 = Route.new(:places => Places.new(center_1, city_1, center_2, city_3))
-      route_1.should_not == route_2
-    end
-
-    it "should be equal to when the routes are identical" do
-      route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      route_2 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      route_1.should == route_2
+      it "a different city present in one trip" do
+        route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
+        route_2 = Route.new(:places => Places.new(center_1, city_1, center_2, city_3))
+        route_1.should_not == route_2
+      end
     end
   end
 
@@ -170,20 +178,21 @@ describe Route do
     end
   end
 
-  describe "Mutation" do
-    it "should form a valid route in all cases" do
+
+  describe "on mutation" do
+    it "forms a valid route in all cases" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2, city_3))
       1.upto(1000) { route.mutate!.should be_valid }
     end
 
-    it "should form combinations of routes allowing alteration in city and center positions when repeated sufficiently" do
+    it "forms combinations of routes allowing alteration in city and center positions when repeated sufficiently" do
       original_route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
       mutated_route_1 = Route.new(:places => Places.new(center_1, city_2, center_2, city_1))
       mutated_route_2 = Route.new(:places => Places.new(center_2, city_1, center_1, city_2))
       mutated_route_3 = Route.new(:places => Places.new(center_2, city_2, center_1, city_1))
       serialized_possible_mutated_routes = [original_route, mutated_route_1, mutated_route_2, mutated_route_3].map(&:to_s)
 
-      serialized_mutated_routes = 1.upto(20).collect { original_route.mutate!.to_s }
+      serialized_mutated_routes = 1.upto(1000).collect { original_route.mutate!.to_s }
       serialized_mutated_routes.each{ |route| serialized_possible_mutated_routes.should be_include(route) }
     end
   end

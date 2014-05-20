@@ -69,23 +69,25 @@ describe Trip do
       trip.should_not == nil
     end
 
-    it "places" do
+    it "object of another class" do
       trip.should_not == places
     end
 
-    it "another trip with different number of places" do
-      trip.should_not == Trip.new(:places => Places.new(center_1, city_1, city_2, center_1))
-      trip.should_not == Trip.new(:places => Places.new(center_1, city_1, city_2, city_3, city_4, center_1))
-    end
+    context "another trip with" do
+      it "different number of places" do
+        trip.should_not == Trip.new(:places => Places.new(center_1, city_1, city_2, center_1))
+        trip.should_not == Trip.new(:places => Places.new(center_1, city_1, city_2, city_3, city_4, center_1))
+      end
 
-    it "another trip with different places" do
-      trip.should_not == Trip.new(:places => Places.new(center_1, city_1, city_2, city_4, center_1))
-      trip.should_not == Trip.new(:places => Places.new(center_2, city_1, city_2, city_3, center_2))
-    end
+      it "different places" do
+        trip.should_not == Trip.new(:places => Places.new(center_1, city_1, city_2, city_4, center_1))
+        trip.should_not == Trip.new(:places => Places.new(center_2, city_1, city_2, city_3, center_2))
+      end
 
-    it "another trip with different order of places" do
-      another_trip = Trip.new(:places => Places.new(center_1, city_1, city_3, city_4, center_1))
-      trip.should_not == another_trip
+      it "different order of places" do
+        another_trip = Trip.new(:places => Places.new(center_1, city_1, city_3, city_4, center_1))
+        trip.should_not == another_trip
+      end
     end
   end
 
@@ -96,12 +98,14 @@ describe Trip do
       trip.should == trip
     end
 
-    it "trip with same place order" do
-      trip.should == Trip.new(:places => Places.new(center_1, city_1, city_2, city_3, center_1))
-    end
+    context "another trip with" do
+      it "same place order" do
+        trip.should == Trip.new(:places => Places.new(center_1, city_1, city_2, city_3, center_1))
+      end
 
-    it "trip with reverse place order" do
-      trip.should == Trip.new(:places => Places.new(center_1, city_3, city_2, city_1, center_1))
+      it "reverse place order" do
+        trip.should == Trip.new(:places => Places.new(center_1, city_3, city_2, city_1, center_1))
+      end
     end
   end
 
