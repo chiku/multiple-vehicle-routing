@@ -1,5 +1,3 @@
-require File.dirname(__FILE__) + '/place'
-
 class BlankPlace
   def city?
     false
