@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.dirname(__FILE__) + '/route'
 
 class Population
@@ -16,7 +18,7 @@ class Population
   end
 
   def create_routes
-    @routes = (1..size).collect { |route| Route.new :places => places, :permitted_load => permitted_load }
+    @routes = (1..size).collect { |_route| Route.new places: places, permitted_load: permitted_load }
   end
 
   def run

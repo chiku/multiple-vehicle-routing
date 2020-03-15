@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.dirname(__FILE__) + '/place'
 require File.dirname(__FILE__) + '/blank_place'
 
@@ -9,7 +11,7 @@ class Places
   end
 
   def at(location)
-    places.at(location) or BlankPlace.new
+    places.at(location) || BlankPlace.new
   end
 
   def first_place
@@ -37,7 +39,7 @@ class Places
   end
 
   def has_same_center_at_extremes?
-    begins_with_center? and first_place == last_place
+    begins_with_center? && (first_place == last_place)
   end
 
   def has_unique_places?
@@ -48,7 +50,7 @@ class Places
     uniq_list? places.select(&:city?)
   end
 
-  def uniq_list? list
+  def uniq_list?(list)
     list.uniq.size == list.size
   end
   private :uniq_list?
@@ -58,11 +60,11 @@ class Places
   end
 
   def has_no_intermediate_center?
-    not intermediates.has_center?
+    !intermediates.has_center?
   end
 
   def has_no_consecutive_center?
-    places.each_cons(2).none? { |place_1, place_2| place_1.center? and place_2.center? }
+    places.each_cons(2).none? { |place_1, place_2| place_1.center? && place_2.center? }
   end
 
   def <<(place)
@@ -70,12 +72,13 @@ class Places
   end
 
   def to_s
-    "(" + places.map(&:name).join(' -> ') + ")"
+    '(' + places.map(&:name).join(' -> ') + ')'
   end
 
   def ==(other)
     return true if equal? other
     return false unless other.instance_of? self.class
+
     places == other.places
   end
 
@@ -88,7 +91,7 @@ class Places
   end
 
   def round_trip_distance
-    places.each_cons(2).map{ |from, to| from.distance to }.reduce(0, &:+)
+    places.each_cons(2).map { |from, to| from.distance to }.reduce(0, &:+)
   end
 
   def size
@@ -100,11 +103,13 @@ class Places
   end
 
   def equivalent_positions?(position_1, position_2)
-    (places[position_1].city? and places[position_2].city?) or (places[position_1].center? and places[position_2].center?)
+    (places[position_1].city? && places[position_2].city?) || (places[position_1].center? && places[position_2].center?)
   end
 
   def interchange_positions_on_equivalence!(position_1, position_2)
-    interchange_positions!(position_1, position_2) if equivalent_positions?(position_1, position_2)
+    if equivalent_positions?(position_1, position_2)
+      interchange_positions!(position_1, position_2)
+    end
   end
 
   def replicate_first_place_to_end

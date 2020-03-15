@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.dirname(__FILE__) + '/places'
 require File.dirname(__FILE__) + '/trip'
 
@@ -10,12 +12,12 @@ class Route
     split_into_trips
   end
 
-  PLACES_VALIDATIONS = [
-    :begins_with_center?,
-    :ends_with_city?,
-    :has_unique_places?,
-    :has_no_consecutive_center?
-  ]
+  PLACES_VALIDATIONS = %i[
+    begins_with_center?
+    ends_with_city?
+    has_unique_places?
+    has_no_consecutive_center?
+  ].freeze
 
   def valid?
     PLACES_VALIDATIONS.all? { |validation| places.send validation }
@@ -24,6 +26,7 @@ class Route
   def ==(other)
     return true if equal? other
     return false unless other.instance_of? self.class
+
     contains_trips? other.trips
   end
 
@@ -36,11 +39,11 @@ class Route
   end
 
   def fitter_than?(other_route)
-    (total_overloads == other_route.total_overloads) ? (total_distance < other_route.total_distance) : (total_overloads < other_route.total_overloads)
+    total_overloads == other_route.total_overloads ? (total_distance < other_route.total_distance) : (total_overloads < other_route.total_overloads)
   end
 
   def contains_trips?(trip_list)
-    trip_list.size == trips.size and trip_list.all?{ |trip| contains_trip? trip }
+    (trip_list.size == trips.size) && trip_list.all? { |trip| contains_trip? trip }
   end
 
   def contains_trip?(trip)
@@ -58,7 +61,7 @@ class Route
   end
 
   def split_into_trips
-    @trips = places.split_by_leading_center.map{ |places| Trip.new :places => places.replicate_first_place_to_end, :permitted_load => permitted_load }
+    @trips = places.split_by_leading_center.map { |places| Trip.new places: places.replicate_first_place_to_end, permitted_load: permitted_load }
   end
   private :split_into_trips
 end

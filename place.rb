@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.dirname(__FILE__) + '/coordinates'
 
 class Place
@@ -10,11 +12,12 @@ class Place
   end
 
   def ==(other)
-    return true if self.equal? other
+    return true if equal? other
     return false unless other.instance_of? self.class
-    coordinates == other.coordinates and capacity == other.capacity and name == other.name
+
+    (coordinates == other.coordinates) && (capacity == other.capacity) && (name == other.name)
   end
-  
+
   def hash
     name.hash + coordinates.hash + capacity.hash
   end

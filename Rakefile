@@ -1,8 +1,13 @@
-require 'rspec/core/rake_task'
+# frozen_string_literal: true
 
-desc "Run specs"
+require 'rspec/core/rake_task'
+require 'rubocop/rake_task'
+
+RuboCop::RakeTask.new
+
+desc 'Run specs'
 task :spec do
   RSpec::Core::RakeTask.new
 end
 
-task :default => :spec
+task default: :spec
