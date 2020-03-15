@@ -13,8 +13,8 @@ describe Coordinates do
 
   describe 'equals' do
     it 'itself' do
-      c = Coordinates.new(2, 4)
-      expect(c).to eq c
+      coordinates = Coordinates.new(2, 4)
+      expect(coordinates).to eq coordinates
     end
 
     it 'another coordinate with same x and y coordinates' do
@@ -46,9 +46,9 @@ describe Coordinates do
 
   describe 'hash' do
     it 'is equal when identical' do
-      c1 = Coordinates.new(1, 3)
-      c2 = Coordinates.new(1, 3)
-      expect(c1.hash).to eq c2.hash
+      coordinates_1 = Coordinates.new(1, 3)
+      coordinates_2 = Coordinates.new(1, 3)
+      expect(coordinates_1.hash).to eq coordinates_2.hash
     end
   end
 end

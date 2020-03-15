@@ -51,7 +51,7 @@ class Route
   end
 
   def to_s
-    "#{trips.map(&:to_s).join(' ')} => [#{total_overloads}:#{'%0.2f' % total_distance}]"
+    "#{trips.map(&:to_s).join(' ')} => [#{total_overloads}:#{format('%<total_distance>0.2f', total_distance: total_distance)}]"
   end
 
   def mutate!

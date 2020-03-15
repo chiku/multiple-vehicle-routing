@@ -56,7 +56,7 @@ class Places
   private :uniq_list?
 
   def intermediates
-    Places.new *places[1..-2]
+    Places.new(*places[1..-2])
   end
 
   def has_no_intermediate_center?
@@ -87,7 +87,7 @@ class Places
   end
 
   def reverse
-    Places.new *places.reverse
+    Places.new(*places.reverse)
   end
 
   def round_trip_distance
