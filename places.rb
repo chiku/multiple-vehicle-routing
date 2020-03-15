@@ -107,9 +107,7 @@ class Places
   end
 
   def interchange_positions_on_equivalence!(position_1, position_2)
-    if equivalent_positions?(position_1, position_2)
-      interchange_positions!(position_1, position_2)
-    end
+    interchange_positions!(position_1, position_2) if equivalent_positions?(position_1, position_2)
   end
 
   def replicate_first_place_to_end
