@@ -1,3 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'rspec'
+group :test do
+  gem 'rake'
+  gem 'rspec'
+  gem 'rspec-collection_matchers'
+end

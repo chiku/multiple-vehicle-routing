@@ -9,100 +9,100 @@ describe Route do
 
   describe "is not valid when" do
     it "it begins with a city" do
-      Route.new(:places => Places.new(city_1, city_2)).should_not be_valid
+      expect(Route.new(:places => Places.new(city_1, city_2))).not_to be_valid
     end
 
     it "it ends with a center" do
-      Route.new(:places => Places.new(center_1, city_1, center_2)).should_not be_valid
+      expect(Route.new(:places => Places.new(center_1, city_1, center_2))).not_to be_valid
     end
 
     it "a city is repeated" do
-      Route.new(:places => Places.new(center_1, city_1, center_2, city_1)).should_not be_valid
+      expect(Route.new(:places => Places.new(center_1, city_1, center_2, city_1))).not_to be_valid
     end
 
     it "a center is repeated" do
-      Route.new(:places => Places.new(center_1, city_1, center_1, city_2)).should_not be_valid
+      expect(Route.new(:places => Places.new(center_1, city_1, center_1, city_2))).not_to be_valid
     end
 
     it "two centers occur together" do
-      Route.new(:places => Places.new(center_1, center_2, city_2)).should_not be_valid
+      expect(Route.new(:places => Places.new(center_1, center_2, city_2))).not_to be_valid
     end
   end
 
    describe "is valid when" do
     it "it begins with a center, ends with a city and all centers have at least one intermediate city" do
-      Route.new(:places => Places.new(center_1, city_1, center_2, city_2)).should be_valid
-      Route.new(:places => Places.new(center_1, city_1)).should be_valid
+      expect(Route.new(:places => Places.new(center_1, city_1, center_2, city_2))).to be_valid
+      expect(Route.new(:places => Places.new(center_1, city_1))).to be_valid
     end
   end
 
   describe "Trips" do
-    it "should know that a route contains has to a trip" do
+    it "knows that a route contains has to a trip" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      route.contains_trip?(1).should be_false
+      expect(route).not_to be_contains_trip 1
     end
 
-    it "should know that a route contains a trip" do
+    it "knows that a route contains a trip" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      route.contains_trip?(Trip.new(:places => Places.new(center_1, city_1, center_1))).should be_true
-      route.contains_trip?(Trip.new(:places => Places.new(center_2, city_2, center_2))).should be_true
-      route.contains_trip?(Trip.new(:places => Places.new(center_1, city_2, center_1))).should be_false
+      expect(route).to be_contains_trip Trip.new(:places => Places.new(center_1, city_1, center_1))
+      expect(route).to be_contains_trip Trip.new(:places => Places.new(center_2, city_2, center_2))
+      expect(route).not_to be_contains_trip Trip.new(:places => Places.new(center_1, city_2, center_1))
     end
 
-    it "should know that the contained trips present in an array when the trips belong to the same route" do
+    it "knows that the contained trips present in an array when the trips belong to the same route" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      route.contains_trips?(route.trips).should be_true
+      expect(route).to be_contains_trips(route.trips)
     end
 
-    it "should know that the contained trips present in an array when the trips belong to a different identical route" do
+    it "knows that the contained trips present in an array when the trips belong to a different identical route" do
       route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
       route_2 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      route_1.contains_trips?(route_2.trips).should be_true
+      expect(route_1).to be_contains_trips(route_2.trips)
     end
 
-    it "should know that the contained trips present in an array has one trip is missing from the list" do
+    it "knows that the contained trips present in an array has one trip is missing from the list" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
       trips = [Trip.new(:places => Places.new(center_1, city_1, center_1))]
-      route.contains_trips?(trips).should be_false
+      expect(route).not_to be_contains_trips(trips)
     end
 
-    it "should know that the contained trips present in an array has one trip extra in the list" do
+    it "knows that the contained trips present in an array has one trip extra in the list" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
       trips = [
         Trip.new(:places => Places.new(center_1, city_1, center_1)),
         Trip.new(:places => Places.new(center_2, city_2, center_2)),
         Trip.new(:places => Places.new(center_1, city_2, center_1))
       ]
-      route.contains_trips?(trips).should be_false
+      expect(route).not_to be_contains_trips(trips)
     end
 
-    it "should know that the contained trips present in an array has one trip different in the list" do
+    it "knows that the contained trips present in an array has one trip different in the list" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
       trips = [
         Trip.new(:places => Places.new(center_1, city_1, center_1)),
         Trip.new(:places => Places.new(center_2, city_1, center_2))
       ]
-      route.contains_trips?(trips).should be_false
+      expect(route).not_to be_contains_trips(trips)
     end
   end
 
   describe "to_s" do
     it "serializes to a string representation" do
-      Route.new(:places => Places.new(center_1, city_1, center_2, city_2)).to_s.should == "(A -> a -> A)[5] (B -> b -> B)[6] => [2:8.00]"
+      expect(Route.new(:places => Places.new(center_1, city_1, center_2, city_2)).to_s).to eq "(A -> a -> A)[5] (B -> b -> B)[6] => [2:8.00]"
     end
   end
 
   describe "equals" do
     it "itself" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      route.should == route
+      expect(route).to eq route
     end
 
     context "another route" do
       it "which is identical" do
         route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
         route_2 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-        route_1.should == route_2
+        expect(route_1).to eq route_2
       end
     end
   end
@@ -110,71 +110,71 @@ describe Route do
   describe "doesn't equal" do
     it "nil" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      route.should_not == nil
+      expect(route).not_to be_nil
     end
 
     it "an object of another class" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
-      route.should_not == 'route'
+      expect(route).not_to eq 'route'
     end
 
     context "another route with" do
       it "different number of trips" do
         route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
         route_2 = Route.new(:places => Places.new(center_1, city_1, city_2))
-        route_1.should_not == route_2
+        expect(route_1).not_to eq route_2
       end
 
       it "a different city present in one trip" do
         route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
         route_2 = Route.new(:places => Places.new(center_1, city_1, center_2, city_3))
-        route_1.should_not == route_2
+        expect(route_1).not_to eq route_2
       end
     end
   end
 
   describe  "Splitting into trips" do
-    it "should split a route into trips properly" do
+    it "splits a route into trips properly" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2))
       trip_1 = Trip.new(:places => Places.new(center_1, city_1, center_1))
       trip_2 = Trip.new(:places => Places.new(center_2, city_2, center_2))
 
       trips = route.trips
-      trips.should have(2).things
-      trips.should == [trip_1, trip_2]
+      expect(trips).to have(2).entries
+      expect(trips).to eq [trip_1, trip_2]
     end
   end
 
   describe "Fitness" do
-    it "should know the total distance of the route" do
-      Route.new(:places => Places.new(center_1, city_1, city_2)).total_distance.should == 4
-      Route.new(:places => Places.new(center_1, city_1, center_2, city_2)).total_distance.should == 8
+    it "knows the total distance of the route" do
+      expect(Route.new(:places => Places.new(center_1, city_1, city_2)).total_distance).to eq 4
+      expect(Route.new(:places => Places.new(center_1, city_1, center_2, city_2)).total_distance).to eq 8
     end
 
-    it "should know the total overloads of the route" do
+    it "knows the total overloads of the route" do
       places = Places.new(center_1, city_1, center_2, city_2)
-      Route.new(:places => places, :permitted_load => 4).total_overloads.should == 2
-      Route.new(:places => places, :permitted_load => 5).total_overloads.should == 1
-      Route.new(:places => places, :permitted_load => 6).total_overloads.should == 0
+      expect(Route.new(:places => places, :permitted_load => 4).total_overloads).to eq 2
+      expect(Route.new(:places => places, :permitted_load => 5).total_overloads).to eq 1
+      expect(Route.new(:places => places, :permitted_load => 6).total_overloads).to eq 0
     end
 
-    it "should know the total overloads of the route and pick permitted loads from attributes" do
+    it "knows the total overloads of the route and pick permitted loads from attributes" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2), :permitted_load => 5)
-      route.total_overloads.should == 1
+      expect(route.total_overloads).to eq 1
     end
 
-    it "should know that a fitter route has less overloads" do
+    it "knows that a fitter route has less overloads" do
       route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2), :permitted_load => 5)
       route_2 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2), :permitted_load => 4)
-      route_1.fitter_than?(route_2).should be_true
-      route_2.fitter_than?(route_1).should be_false
+      expect(route_1).to be_fitter_than route_2
+      expect(route_2).not_to be_fitter_than route_1
     end
 
-    it "should know that a fitter route with same overloads has less total distance" do
+    it "knows that a fitter route with same overloads has less total distance" do
       route_1 = Route.new(:places => Places.new(center_1, city_1, center_2, city_2), :permitted_load => 5)
       route_2 = Route.new(:places => Places.new(center_1, city_1, city_2), :permitted_load => 5)
-      route_1.fitter_than?(route_2).should be_false
-      route_2.fitter_than?(route_1).should be_true
+      expect(route_1).not_to be_fitter_than route_2
+      expect(route_2).to be_fitter_than route_1
     end
   end
 
@@ -182,7 +182,7 @@ describe Route do
   describe "on mutation" do
     it "forms a valid route in all cases" do
       route = Route.new(:places => Places.new(center_1, city_1, center_2, city_2, city_3))
-      1.upto(1000) { route.mutate!.should be_valid }
+      1.upto(1000) { expect(route.mutate!).to be_valid }
     end
 
     it "forms combinations of routes allowing alteration in city and center positions when repeated sufficiently" do
@@ -193,7 +193,7 @@ describe Route do
       serialized_possible_mutated_routes = [original_route, mutated_route_1, mutated_route_2, mutated_route_3].map(&:to_s)
 
       serialized_mutated_routes = 1.upto(1000).collect { original_route.mutate!.to_s }
-      serialized_mutated_routes.each{ |route| serialized_possible_mutated_routes.should be_include(route) }
+      serialized_mutated_routes.each{ |route| expect(serialized_possible_mutated_routes).to include(route) }
     end
   end
 end

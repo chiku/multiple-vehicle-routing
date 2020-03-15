@@ -6,17 +6,17 @@ describe Center do
   let(:place) { Center.new(:name => 'A', :coordinates => coordinates, :capacity => 100) }
 
   it "has a name, coordinates and a capacity" do
-    place.name.should == 'A'
-    place.coordinates.should == coordinates
-    place.capacity.should == 100
+    expect(place.name).to eq 'A'
+    expect(place.coordinates).to eq coordinates
+    expect(place.capacity).to eq 100
   end
 
   it "knows that it is a center" do
-    place.should be_center
+    expect(place).to be_center
   end
 
   it "knows that it is not a city" do
-    place.should_not be_city
+    expect(place).not_to be_city
   end
 
   it_should_behave_like "Place", Center, City
@@ -29,15 +29,15 @@ describe Center do
     end
 
     it "adds a new places to the list of places" do
-      @places_list.should have(2).thing
+      expect(@places_list).to have(2).entries
     end
 
     it "add a new places containng the center to the end" do
-      @places_list.last.places.should == [place]
+      expect(@places_list.last.places).to eq [place]
     end
 
     it "doesn't modify earlier places" do
-      @places_list.first.places.should == [@another_center]
+      expect(@places_list.first.places).to eq [@another_center]
     end
   end
 end
