@@ -1,3 +1,7 @@
+AllCops:
+  EnabledByDefault: true
+  SuggestExtensions: true
+
 Layout/LineLength:
   Max: 150
 
@@ -32,13 +36,3 @@ Style/AccessModifierDeclarations:
 
 Style/Documentation:
   Enabled: false
-
-# Experimental cops
-Style/HashEachMethods:
-  Enabled: true
-
-Style/HashTransformKeys:
-  Enabled: true
-
-Style/HashTransformValues:
-  Enabled: true

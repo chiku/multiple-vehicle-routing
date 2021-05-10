@@ -13,20 +13,15 @@ module MultipleVehicleRouting
       @permitted_load = options[:permitted_load] || 0
     end
 
-    PLACES_VALIDATIONS = %i[
-      begins_with_center?
-      has_same_center_at_extremes?
-      has_no_intermediate_center?
-      has_unique_cities?
-    ].freeze
+    PLACES_VALIDATIONS = %i[begins_with_center? has_same_center_at_extremes? has_no_intermediate_center? has_unique_cities?].freeze
 
     def valid?
-      PLACES_VALIDATIONS.all? { |validation| places.send validation }
+      PLACES_VALIDATIONS.all? { |validation| places.send(validation) }
     end
 
     def ==(other)
-      return true if equal? other
-      return false unless other.instance_of? self.class
+      return true if equal?(other)
+      return false unless other.instance_of?(self.class)
 
       (places == other.places) || (places.reverse == other.places)
     end

@@ -10,8 +10,8 @@ module MultipleVehicleRouting
     end
 
     def ==(other)
-      return true if other.equal? self
-      return false unless other.instance_of? Coordinates
+      return true if other.equal?(self)
+      return false unless other.instance_of?(Coordinates)
 
       (other.x == x) && (other.y == y)
     end

@@ -10,22 +10,17 @@ module MultipleVehicleRouting
       split_into_trips
     end
 
-    PLACES_VALIDATIONS = %i[
-      begins_with_center?
-      ends_with_city?
-      has_unique_places?
-      has_no_consecutive_center?
-    ].freeze
+    PLACES_VALIDATIONS = %i[begins_with_center? ends_with_city? has_unique_places? has_no_consecutive_center?].freeze
 
     def valid?
-      PLACES_VALIDATIONS.all? { |validation| places.send validation }
+      PLACES_VALIDATIONS.all? { |validation| places.send(validation) }
     end
 
     def ==(other)
-      return true if equal? other
-      return false unless other.instance_of? self.class
+      return true if equal?(other)
+      return false unless other.instance_of?(self.class)
 
-      contains_trips? other.trips
+      contains_trips?(other.trips)
     end
 
     def total_distance
@@ -41,11 +36,11 @@ module MultipleVehicleRouting
     end
 
     def contains_trips?(trip_list)
-      (trip_list.size == trips.size) && trip_list.all? { |trip| contains_trip? trip }
+      (trip_list.size == trips.size) && trip_list.all? { |trip| contains_trip?(trip) }
     end
 
     def contains_trip?(trip)
-      trips.include? trip
+      trips.include?(trip)
     end
 
     def to_s
@@ -59,7 +54,7 @@ module MultipleVehicleRouting
     end
 
     def split_into_trips
-      @trips = places.split_by_leading_center.map { |places| Trip.new places: places.replicate_first_place_to_end, permitted_load: permitted_load }
+      @trips = places.split_by_leading_center.map { |places| Trip.new(places: places.replicate_first_place_to_end, permitted_load: permitted_load) }
     end
     private :split_into_trips
   end

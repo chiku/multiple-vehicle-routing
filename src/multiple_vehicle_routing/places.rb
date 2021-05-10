@@ -41,11 +41,11 @@ module MultipleVehicleRouting
     end
 
     def has_unique_places?
-      uniq_list? places
+      uniq_list?(places)
     end
 
     def has_unique_cities?
-      uniq_list? places.select(&:city?)
+      uniq_list?(places.select(&:city?))
     end
 
     def uniq_list?(list)
@@ -70,12 +70,12 @@ module MultipleVehicleRouting
     end
 
     def to_s
-      '(' + places.map(&:name).join(' -> ') + ')'
+      "(#{places.map(&:name).join(' -> ')})"
     end
 
     def ==(other)
-      return true if equal? other
-      return false unless other.instance_of? self.class
+      return true if equal?(other)
+      return false unless other.instance_of?(self.class)
 
       places == other.places
     end
@@ -89,7 +89,8 @@ module MultipleVehicleRouting
     end
 
     def round_trip_distance
-      places.each_cons(2).map { |from, to| from.distance to }.reduce(0, &:+)
+      places.each_cons(2).map { |from, to| from.distance(to) }
+            .reduce(0, &:+)
     end
 
     def size

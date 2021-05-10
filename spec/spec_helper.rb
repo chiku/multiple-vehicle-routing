@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 src = File.expand_path(File.join(__dir__, '..', 'src'))
-$LOAD_PATH.unshift src unless $LOAD_PATH.include?(src)
+$LOAD_PATH.unshift(src) unless $LOAD_PATH.include?(src)
 
 require 'simplecov'
 require 'rspec'
@@ -18,11 +18,11 @@ Dir[File.expand_path(File.join(__dir__, '**', '*_checks.rb'))].sort.each do |fil
 end
 
 RSpec.configure do |config|
-  config.expect_with :rspec do |expectations|
+  config.expect_with(:rspec) do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
-  config.mock_with :rspec do |mocks|
+  config.mock_with(:rspec) do |mocks|
     mocks.verify_partial_doubles = true
   end
 

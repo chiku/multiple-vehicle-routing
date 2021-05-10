@@ -11,7 +11,7 @@ module MultipleVehicleRouting
     end
 
     def ==(other)
-      other.is_a? BlankPlace
+      other.is_a?(BlankPlace)
     end
 
     def hash

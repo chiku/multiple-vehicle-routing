@@ -11,8 +11,8 @@ module MultipleVehicleRouting
     end
 
     def ==(other)
-      return true if equal? other
-      return false unless other.instance_of? self.class
+      return true if equal?(other)
+      return false unless other.instance_of?(self.class)
 
       (coordinates == other.coordinates) && (capacity == other.capacity) && (name == other.name)
     end
@@ -22,7 +22,7 @@ module MultipleVehicleRouting
     end
 
     def distance(place)
-      @distance = @coordinates.distance_from place.coordinates
+      @distance = @coordinates.distance_from(place.coordinates)
     end
   end
 end
