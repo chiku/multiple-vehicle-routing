@@ -7,7 +7,7 @@ module MultipleVehicleRouting
     def initialize(options)
       @places                 = options[:places]
       @permitted_load         = options[:permitted_load]
-      @size                   = options[:size]                 || Integer((places.size * 1.5), 10)
+      @size                   = options[:size]                 || Integer((places.size * 1.5))
       @max_generation_runs    = options[:max_generation_runs]  || 5000
       @current_generation_run = 0
       @mutation_probability   = options[:mutation_probability] || 0.10

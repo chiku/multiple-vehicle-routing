@@ -12,4 +12,5 @@ require 'multiple_vehicle_routing/population'
 
 module MultipleVehicleRouting
   VERSION = '0.1.0'
+  public_constant :VERSION
 end

@@ -8,15 +8,16 @@ module MultipleVehicleRouting
 
     extend Forwardable
 
-    def initialize(options = {})
-      @places         = options[:places]         || Places.new
-      @permitted_load = options[:permitted_load] || 0
+    PLACES_VALIDATIONS = %i[begins_with_center? has_same_center_at_extremes? has_no_intermediate_center? has_unique_cities?].freeze
+    private_constant :PLACES_VALIDATIONS
+
+    def initialize(places: Places.new, permitted_load: 0)
+      @places         = places
+      @permitted_load = permitted_load
     end
 
-    PLACES_VALIDATIONS = %i[begins_with_center? has_same_center_at_extremes? has_no_intermediate_center? has_unique_cities?].freeze
-
     def valid?
-      PLACES_VALIDATIONS.all? { |validation| places.send(validation) }
+      PLACES_VALIDATIONS.all? { |validation| places.public_send(validation) }
     end
 
     def ==(other)

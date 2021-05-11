@@ -1,6 +1,9 @@
+require:
+  - rubocop-rake
+  - rubocop-rspec
+
 AllCops:
   EnabledByDefault: true
-  SuggestExtensions: true
 
 Layout/LineLength:
   Max: 150
@@ -36,3 +39,24 @@ Style/AccessModifierDeclarations:
 
 Style/Documentation:
   Enabled: false
+
+Style/DocumentationMethod:
+  Enabled: false
+
+Bundler/GemComment:
+  Enabled: false
+
+Style/Copyright:
+  Enabled: false
+
+Lint/ConstantResolution:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 8
+
+RSpec/ExampleLength:
+  Max: 10

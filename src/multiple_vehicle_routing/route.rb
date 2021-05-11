@@ -4,16 +4,17 @@ module MultipleVehicleRouting
   class Route
     attr_reader :places, :trips, :permitted_load
 
-    def initialize(options = {})
-      @places         = options[:places]         || Places.new
-      @permitted_load = options[:permitted_load] || 0
+    PLACES_VALIDATIONS = %i[begins_with_center? ends_with_city? has_unique_places? has_no_consecutive_center?].freeze
+    private_constant :PLACES_VALIDATIONS
+
+    def initialize(places: Places.new, permitted_load: 0)
+      @places         = places
+      @permitted_load = permitted_load
       split_into_trips
     end
 
-    PLACES_VALIDATIONS = %i[begins_with_center? ends_with_city? has_unique_places? has_no_consecutive_center?].freeze
-
     def valid?
-      PLACES_VALIDATIONS.all? { |validation| places.send(validation) }
+      PLACES_VALIDATIONS.all? { |validation| places.public_send(validation) }
     end
 
     def ==(other)
